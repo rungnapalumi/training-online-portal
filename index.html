@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>People Reader - Movement in Communication</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <h1 class="logo">PEOPLE READER™</h1>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="container">
+            <ul class="nav-list">
+                <li><a href="#home" class="nav-link active">Home</a></li>
+                <li><a href="#tutorials" class="nav-link">Online Tutorial</a></li>
+                <li><a href="#account" class="nav-link">Create Account</a></li>
+                <li><a href="#upload" class="nav-link">Upload Video</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Movement in Communication Section -->
+        <section id="home" class="section">
+            <div class="container">
+                <h2 class="section-title">Movement in Communication</h2>
+                <p class="section-subtitle">Access the Movement Analysis Tool</p>
+                <p class="instruction-text">Please complete the payment before uploading your video for analysis.</p>
+                
+                <div class="payment-section">
+                    <div class="card">
+                        <h3 class="card-title">Scan QR Code to Pay</h3>
+                        <div class="qr-placeholder">
+                            <div class="qr-code-area">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
+                                    <rect width="200" height="200" fill="#f5f5f5"/>
+                                    <text x="100" y="100" text-anchor="middle" dominant-baseline="middle" fill="#a0826d" font-size="14">QR Code Here</text>
+                                </svg>
+                            </div>
+                        </div>
+                        <p class="card-instruction">After payment, upload your confirmation slip on the right.</p>
+                    </div>
+                    
+                    <div class="card">
+                        <h3 class="card-title">Upload Payment Confirmation</h3>
+                        <div class="upload-area">
+                            <input type="file" id="paymentSlip" accept=".jpg,.jpeg,.png,.pdf" hidden>
+                            <button class="btn btn-primary" onclick="document.getElementById('paymentSlip').click()">Upload Slip</button>
+                            <p class="file-format">Accepted formats: JPG, PNG, PDF</p>
+                        </div>
+                        <button class="btn btn-primary" onclick="scrollToSection('account')">Create Account</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Online Tutorial Section -->
+        <section id="tutorials" class="section section-alt">
+            <div class="container">
+                <h2 class="section-title">Online Tutorial</h2>
+                
+                <div class="tutorial-grid">
+                    <div class="tutorial-card">
+                        <h3 class="tutorial-title">How to Record<br>your Video</h3>
+                        <div class="video-placeholder">
+                            <svg class="play-icon" viewBox="0 0 24 24" fill="#a0826d">
+                                <path d="M8 5v14l11-7z"/>
+                            </svg>
+                        </div>
+                        <button class="btn btn-secondary">▶ Play</button>
+                    </div>
+                    
+                    <div class="tutorial-card">
+                        <h3 class="tutorial-title">How to Upload<br>Payment & Video</h3>
+                        <div class="video-placeholder">
+                            <svg class="play-icon" viewBox="0 0 24 24" fill="#a0826d">
+                                <path d="M8 5v14l11-7z"/>
+                            </svg>
+                        </div>
+                        <button class="btn btn-secondary">▶ Play</button>
+                    </div>
+                </div>
+                
+                <div class="tutorial-grid">
+                    <div class="tutorial-card">
+                        <h3 class="tutorial-title">Lesson 1</h3>
+                        <div class="video-placeholder">
+                            <svg class="play-icon" viewBox="0 0 24 24" fill="#a0826d">
+                                <path d="M8 5v14l11-7z"/>
+                            </svg>
+                        </div>
+                        <button class="btn btn-secondary">▶ Play</button>
+                    </div>
+                    
+                    <div class="tutorial-card">
+                        <h3 class="tutorial-title">Lesson 2</h3>
+                        <div class="video-placeholder">
+                            <svg class="play-icon" viewBox="0 0 24 24" fill="#a0826d">
+                                <path d="M8 5v14l11-7z"/>
+                            </svg>
+                        </div>
+                        <button class="btn btn-secondary">▶ Play</button>
+                    </div>
+                    
+                    <div class="tutorial-card">
+                        <h3 class="tutorial-title">Lesson 3</h3>
+                        <div class="video-placeholder">
+                            <svg class="play-icon" viewBox="0 0 24 24" fill="#a0826d">
+                                <path d="M8 5v14l11-7z"/>
+                            </svg>
+                        </div>
+                        <button class="btn btn-secondary">▶ Play</button>
+                    </div>
+                    
+                    <div class="tutorial-card">
+                        <h3 class="tutorial-title">Lesson 4</h3>
+                        <div class="video-placeholder">
+                            <svg class="play-icon" viewBox="0 0 24 24" fill="#a0826d">
+                                <path d="M8 5v14l11-7z"/>
+                            </svg>
+                        </div>
+                        <button class="btn btn-secondary">▶ Play</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Create Account Section -->
+        <section id="account" class="section">
+            <div class="container">
+                <h2 class="section-title">Create Your Account</h2>
+                
+                <div class="form-container">
+                    <form id="createAccountForm" class="account-form">
+                        <div class="form-group">
+                            <label for="username">User Name</label>
+                            <input type="text" id="username" name="username" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" name="password" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="confirmPassword">Confirm Password</label>
+                            <input type="password" id="confirmPassword" name="confirmPassword" required>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary btn-full">Create Account</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Upload Video Section -->
+        <section id="upload" class="section section-alt">
+            <div class="container">
+                <h2 class="section-title">Upload Your Video for Analysis</h2>
+                
+                <div class="upload-video-section">
+                    <div class="upload-buttons">
+                        <input type="file" id="insertVideo" accept="video/*" hidden>
+                        <button class="btn btn-primary btn-upload" onclick="document.getElementById('insertVideo').click()">
+                            ▶ Insert Video
+                        </button>
+                        
+                        <input type="file" id="uploadVideo" accept="video/*" hidden>
+                        <button class="btn btn-primary btn-upload" onclick="document.getElementById('uploadVideo').click()">
+                            ▶ Upload Video
+                        </button>
+                    </div>
+                    
+                    <p class="upload-instruction">
+                        Please upload one video per person. Ensure your full body is visible and camera is stable.
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 People Reader™. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
+

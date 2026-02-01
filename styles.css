@@ -1,0 +1,457 @@
+/* Font Face Declarations */
+@font-face {
+    font-family: 'Libre Baskerville';
+    src: url('LibreBaskerville-VariableFont_wght.ttf') format('truetype');
+    font-weight: 100 900;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Libre Baskerville';
+    src: url('LibreBaskerville-Italic-VariableFont_wght.ttf') format('truetype');
+    font-weight: 100 900;
+    font-style: italic;
+}
+
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Libre Baskerville', serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f5f5f5;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Header */
+.header {
+    background-color: #3d3630;
+    color: #f5f5f5;
+    padding: 20px 0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.logo {
+    font-size: 1.8rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+}
+
+/* Navigation */
+.nav {
+    background-color: #4a4238;
+    padding: 15px 0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.nav-list {
+    list-style: none;
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.nav-link {
+    color: #f5f5f5;
+    text-decoration: none;
+    font-size: 1rem;
+    padding: 8px 16px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    background-color: #a0826d;
+}
+
+/* Sections */
+.section {
+    padding: 60px 0;
+    background-color: #f5f5f5;
+}
+
+.section-alt {
+    background-color: #e8ddd1;
+}
+
+.section-title {
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 15px;
+    font-weight: 600;
+    color: #2d2520;
+}
+
+.section-subtitle {
+    font-size: 1.3rem;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #555;
+    font-weight: 500;
+}
+
+.instruction-text {
+    text-align: center;
+    color: #666;
+    margin-bottom: 40px;
+    font-size: 1rem;
+}
+
+/* Payment Section */
+.payment-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.card {
+    background: white;
+    border: 2px solid #d0c4b8;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+.card-title {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #555;
+    font-weight: 600;
+}
+
+.qr-placeholder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.qr-code-area {
+    border: 2px dashed #d0c4b8;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.card-instruction {
+    text-align: center;
+    color: #666;
+    font-size: 0.9rem;
+    margin-top: 20px;
+    line-height: 1.5;
+}
+
+.upload-area {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+    margin: 30px 0;
+}
+
+.file-format {
+    font-size: 0.85rem;
+    color: #666;
+    text-align: center;
+}
+
+/* Buttons */
+.btn {
+    padding: 12px 30px;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.btn-primary {
+    background-color: #a0826d;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #8a6f5a;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.btn-secondary {
+    background-color: #a0826d;
+    color: white;
+    padding: 8px 20px;
+    font-size: 0.9rem;
+}
+
+.btn-secondary:hover {
+    background-color: #8a6f5a;
+}
+
+.btn-full {
+    width: 100%;
+    padding: 15px;
+    font-size: 1.1rem;
+}
+
+.btn-upload {
+    min-width: 200px;
+}
+
+/* Tutorial Section */
+.tutorial-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+.tutorial-card {
+    background: white;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.tutorial-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+.tutorial-title {
+    font-size: 1.1rem;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #555;
+    font-weight: 600;
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.video-placeholder {
+    width: 100%;
+    aspect-ratio: 16/9;
+    background-color: #d0c4b8;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.video-placeholder:hover {
+    background-color: #c0b4a8;
+}
+
+.play-icon {
+    width: 60px;
+    height: 60px;
+    opacity: 0.8;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.video-placeholder:hover .play-icon {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+/* Form Section */
+.form-container {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.account-form {
+    background: white;
+    border: 2px solid #d0c4b8;
+    border-radius: 15px;
+    padding: 40px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #555;
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #d0c4b8;
+    border-radius: 8px;
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #a0826d;
+    box-shadow: 0 0 0 3px rgba(160, 130, 109, 0.1);
+}
+
+.form-group input[type="password"] {
+    letter-spacing: 2px;
+}
+
+/* Upload Video Section */
+.upload-video-section {
+    max-width: 700px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.upload-buttons {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.upload-instruction {
+    color: #666;
+    font-size: 1rem;
+    line-height: 1.6;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Footer */
+.footer {
+    background-color: #3d3630;
+    color: #f5f5f5;
+    padding: 30px 0;
+    text-align: center;
+    margin-top: 60px;
+}
+
+.footer p {
+    font-size: 0.9rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .section-title {
+        font-size: 2rem;
+    }
+    
+    .section-subtitle {
+        font-size: 1.1rem;
+    }
+    
+    .payment-section {
+        grid-template-columns: 1fr;
+    }
+    
+    .tutorial-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+    }
+    
+    .nav-list {
+        gap: 15px;
+    }
+    
+    .upload-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .btn-upload {
+        width: 100%;
+        max-width: 250px;
+    }
+    
+    .account-form {
+        padding: 30px 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo {
+        font-size: 1.4rem;
+    }
+    
+    .section-title {
+        font-size: 1.6rem;
+    }
+    
+    .tutorial-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.section {
+    animation: fadeIn 0.6s ease-out;
+}
+
+/* Success/Error Messages */
+.message {
+    padding: 15px;
+    border-radius: 8px;
+    margin: 20px 0;
+    text-align: center;
+    font-weight: 500;
+}
+
+.message-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.message-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
