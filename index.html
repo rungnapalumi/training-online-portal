@@ -49,11 +49,25 @@
                     <div class="card">
                         <h3 class="card-title">Upload Payment Confirmation</h3>
                         <div class="upload-area">
-                            <input type="file" id="paymentSlip" accept=".jpg,.jpeg,.png,.pdf" hidden>
+                            <input type="file" id="paymentSlip" accept=".jpg,.jpeg,.png" hidden>
                             <button class="btn btn-primary" onclick="document.getElementById('paymentSlip').click()">Upload Slip</button>
-                            <p class="file-format">Accepted formats: JPG, PNG, PDF</p>
+                            <p class="file-format">Accepted formats: JPG, PNG</p>
+                            
+                            <!-- Image Preview -->
+                            <div id="slipPreview" class="slip-preview" style="display: none;">
+                                <img id="previewImage" src="" alt="Payment Slip Preview">
+                            </div>
                         </div>
-                        <button class="btn btn-primary" onclick="scrollToSection('account')">Create Account</button>
+                        
+                        <!-- Amount Input -->
+                        <div class="amount-input-area">
+                            <label for="paymentAmount">Payment Amount (THB):</label>
+                            <input type="number" id="paymentAmount" placeholder="Enter amount" min="0" step="1">
+                            <button class="btn btn-secondary" id="verifyPaymentBtn" onclick="verifyPayment()">Verify Payment</button>
+                        </div>
+                        
+                        <button class="btn btn-primary" id="createAccountBtn" onclick="scrollToSection('account')" disabled>Create Account</button>
+                        <p id="paymentStatus" class="payment-status"></p>
                     </div>
                 </div>
             </div>
