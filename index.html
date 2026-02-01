@@ -180,15 +180,33 @@
                         
                         <div class="form-group">
                             <label for="password">Password</label>
-                            <input type="password" id="password" name="password" required>
+                            <div class="password-input-wrapper">
+                                <input type="password" id="password" name="password" required>
+                                <button type="button" class="toggle-password" onclick="togglePassword('password', this)">
+                                    👁️
+                                </button>
+                            </div>
                         </div>
                         
                         <div class="form-group">
                             <label for="confirmPassword">Confirm Password</label>
-                            <input type="password" id="confirmPassword" name="confirmPassword" required>
+                            <div class="password-input-wrapper">
+                                <input type="password" id="confirmPassword" name="confirmPassword" required>
+                                <button type="button" class="toggle-password" onclick="togglePassword('confirmPassword', this)">
+                                    👁️
+                                </button>
+                            </div>
                         </div>
                         
                         <button type="submit" class="btn btn-primary btn-full">Create Account</button>
+                        
+                        <div id="accountCreatedMessage" class="account-created-message" style="display: none;">
+                            <div class="success-icon">✓</div>
+                            <h3>Account Created Successfully!</h3>
+                            <p class="account-username"></p>
+                            <p class="video-quota">Now you can upload <strong>3 videos</strong> for this account to see your progress.</p>
+                            <button class="btn btn-primary" onclick="scrollToSection('upload')">Upload Videos Now</button>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -200,6 +218,10 @@
                 <h2 class="section-title">Upload Your Video for Analysis</h2>
                 
                 <div class="upload-video-section">
+                    <div id="videoQuotaDisplay" class="video-quota-display">
+                        <p>Videos remaining: <strong id="videosRemaining">3</strong> / 3</p>
+                    </div>
+                    
                     <div class="upload-buttons">
                         <input type="file" id="insertVideo" accept="video/*" hidden>
                         <button class="btn btn-primary btn-upload" onclick="document.getElementById('insertVideo').click()">
@@ -215,6 +237,8 @@
                     <p class="upload-instruction">
                         Please upload one video per person. Ensure your full body is visible and camera is stable.
                     </p>
+                    
+                    <div id="uploadedVideosList" class="uploaded-videos-list"></div>
                 </div>
             </div>
         </section>

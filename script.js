@@ -138,6 +138,23 @@ document.getElementById('uploadVideo')?.addEventListener('change', handleVideoUp
 function handleVideoUpload(e) {
     const file = e.target.files[0];
     if (file) {
+        // Check if account is created
+        const accountCreated = sessionStorage.getItem('accountCreated');
+        if (accountCreated !== 'true') {
+            showMessage('Please create an account before uploading videos!', 'error');
+            this.value = '';
+            scrollToSection('account');
+            return;
+        }
+        
+        // Check remaining video quota
+        let videosRemaining = parseInt(sessionStorage.getItem('videoUploadsRemaining') || '3');
+        if (videosRemaining <= 0) {
+            showMessage('You have reached your video upload limit (3 videos maximum)', 'error');
+            this.value = '';
+            return;
+        }
+        
         const fileSize = (file.size / 1024 / 1024).toFixed(2); // Size in MB
         
         if (!file.type.startsWith('video/')) {
@@ -152,10 +169,80 @@ function handleVideoUpload(e) {
             return;
         }
         
-        showMessage(`Video "${file.name}" (${fileSize}MB) uploaded successfully!`, 'success');
+        // Decrease video quota
+        videosRemaining--;
+        sessionStorage.setItem('videoUploadsRemaining', videosRemaining.toString());
+        
+        // Update display
+        updateVideoQuotaDisplay();
+        
+        // Add to uploaded videos list
+        addUploadedVideoToList(file.name, fileSize);
+        
+        showMessage(`Video "${file.name}" (${fileSize}MB) uploaded successfully! ${videosRemaining} video(s) remaining.`, 'success');
         
         // In a real application, you would upload the video to a server here
-        console.log('Video uploaded:', file.name);
+        console.log('Video uploaded:', file.name, 'Remaining quota:', videosRemaining);
+        
+        // Clear input
+        this.value = '';
+    }
+}
+
+// Update video quota display
+function updateVideoQuotaDisplay() {
+    const videosRemaining = parseInt(sessionStorage.getItem('videoUploadsRemaining') || '3');
+    const displayElement = document.getElementById('videosRemaining');
+    if (displayElement) {
+        displayElement.textContent = videosRemaining;
+        
+        // Change color based on remaining videos
+        if (videosRemaining === 0) {
+            displayElement.style.color = '#dc3545';
+        } else if (videosRemaining === 1) {
+            displayElement.style.color = '#ffc107';
+        } else {
+            displayElement.style.color = '#a0826d';
+        }
+    }
+}
+
+// Add uploaded video to list
+function addUploadedVideoToList(filename, filesize) {
+    const listElement = document.getElementById('uploadedVideosList');
+    if (listElement) {
+        const videoItem = document.createElement('div');
+        videoItem.className = 'uploaded-video-item';
+        
+        const videoName = document.createElement('span');
+        videoName.className = 'video-name';
+        videoName.textContent = `${filename} (${filesize}MB)`;
+        
+        const videoStatus = document.createElement('span');
+        videoStatus.className = 'video-status';
+        videoStatus.textContent = '✓ Uploaded';
+        
+        videoItem.appendChild(videoName);
+        videoItem.appendChild(videoStatus);
+        
+        listElement.appendChild(videoItem);
+    }
+}
+
+// Initialize video quota display on page load
+window.addEventListener('load', function() {
+    updateVideoQuotaDisplay();
+});
+
+// Password toggle function
+function togglePassword(inputId, button) {
+    const input = document.getElementById(inputId);
+    if (input.type === 'password') {
+        input.type = 'text';
+        button.textContent = '🙈';
+    } else {
+        input.type = 'password';
+        button.textContent = '👁️';
     }
 }
 
@@ -191,19 +278,32 @@ document.getElementById('createAccountForm')?.addEventListener('submit', functio
         return;
     }
     
-    // Success
-    showMessage(`Account created successfully for ${username}! Payment verified: 500 THB`, 'success');
+    // Success - Show success message
+    const messageDiv = document.getElementById('accountCreatedMessage');
+    const usernameDisplay = messageDiv.querySelector('.account-username');
     
-    // Clear form
-    this.reset();
+    usernameDisplay.textContent = `Welcome, ${username}!`;
+    
+    // Hide form inputs and submit button
+    const formGroups = this.querySelectorAll('.form-group');
+    const submitButton = this.querySelector('button[type="submit"]');
+    
+    formGroups.forEach(group => group.style.display = 'none');
+    submitButton.style.display = 'none';
+    
+    // Show success message
+    messageDiv.style.display = 'block';
+    
+    // Store account info
+    sessionStorage.setItem('accountCreated', 'true');
+    sessionStorage.setItem('username', username);
+    sessionStorage.setItem('videoUploadsRemaining', '3');
     
     // In a real application, you would send this data to a server
-    console.log('Account created:', { username, password: '***', paymentVerified: true });
+    console.log('Account created:', { username, password: '***', paymentVerified: true, videoQuota: 3 });
     
-    // Scroll to upload section after a delay
-    setTimeout(() => {
-        scrollToSection('upload');
-    }, 2000);
+    // Scroll to show the message
+    messageDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
 });
 
 // Tutorial video play buttons

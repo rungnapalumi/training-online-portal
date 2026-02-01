@@ -417,6 +417,102 @@ button:disabled:hover {
     letter-spacing: 2px;
 }
 
+.password-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-input-wrapper input {
+    padding-right: 45px;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2rem;
+    padding: 5px 10px;
+    opacity: 0.6;
+    transition: opacity 0.3s ease;
+}
+
+.toggle-password:hover {
+    opacity: 1;
+}
+
+.account-created-message {
+    margin-top: 30px;
+    padding: 30px;
+    background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+    border: 2px solid #28a745;
+    border-radius: 15px;
+    text-align: center;
+    animation: slideIn 0.5s ease-out;
+}
+
+.success-icon {
+    width: 60px;
+    height: 60px;
+    background-color: #28a745;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 0 auto 20px;
+    animation: scaleIn 0.5s ease-out;
+}
+
+.account-created-message h3 {
+    color: #155724;
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+}
+
+.account-username {
+    color: #155724;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.video-quota {
+    color: #155724;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.video-quota strong {
+    font-size: 1.2rem;
+    color: #0c5c24;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        transform: scale(0);
+    }
+    to {
+        transform: scale(1);
+    }
+}
+
 /* Upload Video Section */
 .upload-video-section {
     max-width: 700px;
@@ -438,6 +534,54 @@ button:disabled:hover {
     line-height: 1.6;
     max-width: 600px;
     margin: 0 auto;
+}
+
+.video-quota-display {
+    background: white;
+    padding: 15px 30px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.video-quota-display p {
+    font-size: 1.1rem;
+    color: #555;
+    margin: 0;
+}
+
+.video-quota-display strong {
+    font-size: 1.5rem;
+    color: #a0826d;
+}
+
+.uploaded-videos-list {
+    margin-top: 30px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.uploaded-video-item {
+    background: white;
+    padding: 15px 20px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.uploaded-video-item .video-name {
+    font-weight: 500;
+    color: #333;
+}
+
+.uploaded-video-item .video-status {
+    color: #28a745;
+    font-size: 0.9rem;
 }
 
 /* Footer */
