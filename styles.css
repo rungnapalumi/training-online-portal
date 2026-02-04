@@ -407,6 +407,26 @@ button:disabled:hover {
     transform: scale(1.1);
 }
 
+.video-container {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    height: 0;
+    overflow: hidden;
+    border-radius: 10px;
+    background-color: #000;
+    margin-bottom: 15px;
+}
+
+.video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+}
+
 /* Form Section */
 .form-container {
     max-width: 500px;

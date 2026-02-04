@@ -532,29 +532,7 @@ document.getElementById('createAccountForm')?.addEventListener('submit', functio
     messageDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
 });
 
-// Tutorial video play buttons
-document.querySelectorAll('.tutorial-card .btn-secondary').forEach(button => {
-    button.addEventListener('click', function() {
-        const card = this.closest('.tutorial-card');
-        const title = card.querySelector('.tutorial-title').textContent.trim();
-        
-        showMessage(`Playing: ${title}`, 'success');
-        
-        // In a real application, this would open a video player modal
-        console.log('Playing tutorial:', title);
-    });
-});
-
-// Click on video placeholder to play
-document.querySelectorAll('.video-placeholder').forEach(placeholder => {
-    placeholder.addEventListener('click', function() {
-        const card = this.closest('.tutorial-card');
-        const playButton = card.querySelector('.btn-secondary');
-        if (playButton) {
-            playButton.click();
-        }
-    });
-});
+// Videos are now embedded YouTube iframes - no additional JavaScript needed for playback
 
 // Helper function to show messages
 function showMessage(text, type) {
