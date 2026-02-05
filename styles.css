@@ -352,7 +352,6 @@ button:disabled:hover {
 
 .tutorial-grid-2 {
     grid-template-columns: repeat(2, 1fr) !important;
-    justify-items: center;
 }
 
 .tutorial-card {
@@ -364,6 +363,9 @@ button:disabled:hover {
     flex-direction: column;
     align-items: center;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
 }
 
 .tutorial-card:hover {
