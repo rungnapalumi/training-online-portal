@@ -42,6 +42,7 @@ const translations = {
         
         // Tutorial Section
         tutorialTitle: "Online Tutorial",
+        introduction: "Introduction",
         lesson: "Lesson",
         playBtn: "▶ Play",
         
@@ -107,6 +108,7 @@ const translations = {
         
         // Tutorial Section
         tutorialTitle: "บทเรียนออนไลน์",
+        introduction: "บทนำ",
         lesson: "บทเรียน",
         playBtn: "▶ เล่น",
         
@@ -204,7 +206,13 @@ function updateLanguage() {
     // Update Tutorial section
     document.querySelector('#tutorials .section-title').textContent = t.tutorialTitle;
     document.querySelectorAll('.tutorial-title').forEach((title, index) => {
-        title.textContent = `${t.lesson} ${index + 1}`;
+        // First 2 are Introduction videos
+        if (index < 2) {
+            title.textContent = `${t.introduction} ${index + 1}`;
+        } else {
+            // Rest are Lesson videos (Lesson 1-5)
+            title.textContent = `${t.lesson} ${index - 1}`;
+        }
     });
     document.querySelectorAll('#tutorials .btn-secondary').forEach(btn => {
         btn.textContent = t.playBtn;
