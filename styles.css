@@ -350,6 +350,11 @@ button:disabled:hover {
     margin-bottom: 30px;
 }
 
+.tutorial-grid-2 {
+    grid-template-columns: repeat(2, 1fr) !important;
+    justify-items: center;
+}
+
 .tutorial-card {
     background: white;
     border-radius: 15px;
@@ -674,6 +679,10 @@ button:disabled:hover {
         gap: 20px;
     }
     
+    .tutorial-grid-2 {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+    
     .nav-list {
         gap: 15px;
     }
@@ -702,7 +711,8 @@ button:disabled:hover {
         font-size: 1.6rem;
     }
     
-    .tutorial-grid {
+    .tutorial-grid,
+    .tutorial-grid-2 {
         grid-template-columns: 1fr;
     }
 }
