@@ -274,6 +274,20 @@
                     <button class="btn btn-secondary" onclick="closeAdminPanel()">Close Admin Panel</button>
                 </div>
                 
+                <!-- Payment Amount Setting -->
+                <div class="card" style="margin-bottom: 30px;">
+                    <h3 class="card-title">Payment Amount Setting</h3>
+                    <form id="paymentAmountForm" class="account-form">
+                        <div class="form-group">
+                            <label for="requiredPaymentAmount">Required Payment Amount (THB)</label>
+                            <input type="number" id="requiredPaymentAmount" min="0" step="1" required>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">Update Payment Amount</button>
+                        <p id="currentPaymentDisplay" style="margin-top: 15px; color: #666; font-size: 0.95rem;"></p>
+                    </form>
+                </div>
+                
                 <!-- Create New User (Admin Only) -->
                 <div class="card" style="margin-bottom: 30px;">
                     <h3 class="card-title">Create New User</h3>

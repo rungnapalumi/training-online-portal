@@ -156,10 +156,21 @@ function initializeUserSystem() {
         };
         localStorage.setItem('users', JSON.stringify(initialUsers));
     }
+    
+    // Initialize payment amount (default 1500 THB)
+    let paymentAmount = localStorage.getItem('requiredPaymentAmount');
+    if (!paymentAmount) {
+        localStorage.setItem('requiredPaymentAmount', '1500');
+    }
 }
 
 // Call initialization on script load
 initializeUserSystem();
+
+// Get required payment amount
+function getRequiredPaymentAmount() {
+    return parseInt(localStorage.getItem('requiredPaymentAmount') || '1500');
+}
 
 // Current user session
 let currentUser = sessionStorage.getItem('currentUser') || null;
@@ -380,6 +391,7 @@ function verifyPayment() {
     const createAccountBtn = document.getElementById('createAccountBtn');
     const paymentStatus = document.getElementById('paymentStatus');
     const slipPreview = document.getElementById('slipPreview');
+    const requiredAmount = getRequiredPaymentAmount();
     
     // Check if slip is uploaded
     const slipFile = document.getElementById('paymentSlip').files[0];
@@ -396,24 +408,30 @@ function verifyPayment() {
         return;
     }
     
-    // Verify if amount is exactly 500
-    if (amount === 500) {
-        paymentStatus.textContent = t.paymentVerified;
+    // Verify if amount matches required amount
+    if (amount === requiredAmount) {
+        const successMsg = currentLanguage === 'en' 
+            ? `✓ Payment verified! Amount is correct (${requiredAmount} THB). You can now create your account.`
+            : `✓ ตรวจสอบการชำระเงินสำเร็จ! จำนวนเงินถูกต้อง (${requiredAmount} บาท) คุณสามารถสร้างบัญชีได้แล้ว`;
+        paymentStatus.textContent = successMsg;
         paymentStatus.className = 'payment-status success';
         createAccountBtn.disabled = false;
         
         // Store verification status
         sessionStorage.setItem('paymentVerified', 'true');
         
-        showMessage(t.paymentVerified, 'success');
+        showMessage(successMsg, 'success');
     } else {
-        paymentStatus.textContent = `${t.paymentFailed} ${amount} ${t.paymentFailedSuffix}`;
+        const errorMsg = currentLanguage === 'en'
+            ? `✗ Payment verification failed! Expected amount: ${requiredAmount} THB, but you entered: ${amount} THB. Please check your payment slip.`
+            : `✗ การตรวจสอบการชำระเงินล้มเหลว! จำนวนเงินที่คาดหวัง: ${requiredAmount} บาท แต่คุณใส่: ${amount} บาท กรุณาตรวจสอบสลิปการชำระเงินของคุณ`;
+        paymentStatus.textContent = errorMsg;
         paymentStatus.className = 'payment-status error';
         createAccountBtn.disabled = true;
         
         sessionStorage.setItem('paymentVerified', 'false');
         
-        showMessage(`${t.paymentFailed} ${amount} ${t.paymentFailedSuffix}`, 'error');
+        showMessage(errorMsg, 'error');
     }
 }
 
@@ -771,8 +789,9 @@ function openAdminPanel() {
     });
     document.getElementById('adminPanel').style.display = 'block';
     
-    // Load user list
+    // Load user list and payment amount
     loadUserList();
+    loadPaymentAmountSetting();
 }
 
 // Close admin panel
@@ -880,6 +899,44 @@ document.getElementById('adminCreateUserForm')?.addEventListener('submit', funct
     
     showMessage(`User "${username}" created successfully!`, 'success');
     loadUserList();
+});
+
+// Load payment amount setting
+function loadPaymentAmountSetting() {
+    const currentAmount = getRequiredPaymentAmount();
+    const input = document.getElementById('requiredPaymentAmount');
+    const display = document.getElementById('currentPaymentDisplay');
+    
+    if (input) {
+        input.value = currentAmount;
+    }
+    
+    if (display) {
+        display.textContent = `Current required payment amount: ${currentAmount} THB`;
+    }
+}
+
+// Payment amount form handler
+document.getElementById('paymentAmountForm')?.addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    if (currentUser !== 'Admin') {
+        showMessage('Access denied! Admin only.', 'error');
+        return;
+    }
+    
+    const newAmount = parseInt(document.getElementById('requiredPaymentAmount').value);
+    
+    if (!newAmount || newAmount < 0) {
+        showMessage('Please enter a valid payment amount!', 'error');
+        return;
+    }
+    
+    // Update payment amount
+    localStorage.setItem('requiredPaymentAmount', newAmount.toString());
+    
+    showMessage(`Payment amount updated to ${newAmount} THB successfully!`, 'success');
+    loadPaymentAmountSetting();
 });
 
 // ==================== UPDATE CREATE ACCOUNT FORM ====================
