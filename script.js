@@ -34,11 +34,7 @@ const translations = {
         
         // Upload Section
         uploadTitle: "Upload Your Video for Analysis",
-        videosRemaining: "Videos remaining:",
-        insertVideoBtn: "▶ Insert Video",
-        uploadVideoBtn: "▶ Upload Video",
-        uploadInstruction: "Please upload one video per person. Ensure your full body is visible and camera is stable.",
-        videoStatus: "✓ Uploaded",
+        uploadVideoBtn: "Go to the upload video page",
         
         // Tutorial Section
         tutorialTitle: "Online Tutorial",
@@ -100,11 +96,7 @@ const translations = {
         
         // Upload Section
         uploadTitle: "อัปโหลดวิดีโอของคุณเพื่อการวิเคราะห์",
-        videosRemaining: "วิดีโอที่เหลือ:",
-        insertVideoBtn: "▶ ใส่วิดีโอ",
-        uploadVideoBtn: "▶ อัปโหลดวิดีโอ",
-        uploadInstruction: "กรุณาอัปโหลดวิดีโอหนึ่งรายการต่อหนึ่งคน ตรวจสอบให้แน่ใจว่าเห็นร่างกายเต็มและกล้องอยู่กับที่",
-        videoStatus: "✓ อัปโหลดแล้ว",
+        uploadVideoBtn: "ไปที่หน้าอัปโหลดวิดีโอ",
         
         // Tutorial Section
         tutorialTitle: "บทเรียนออนไลน์",
@@ -194,14 +186,10 @@ function updateLanguage() {
     
     // Update Upload section
     document.querySelector('#upload .section-title').textContent = t.uploadTitle;
-    const quotaText = document.querySelector('#videoQuotaDisplay p');
-    if (quotaText) {
-        const remaining = document.getElementById('videosRemaining').textContent;
-        quotaText.innerHTML = `${t.videosRemaining} <strong id="videosRemaining">${remaining}</strong> / 3`;
+    const uploadBtn = document.querySelector('.btn-upload');
+    if (uploadBtn) {
+        uploadBtn.textContent = t.uploadVideoBtn;
     }
-    document.querySelectorAll('.btn-upload')[0].textContent = t.insertVideoBtn;
-    document.querySelectorAll('.btn-upload')[1].textContent = t.uploadVideoBtn;
-    document.querySelector('.upload-instruction').textContent = t.uploadInstruction;
     
     // Update Tutorial section
     document.querySelector('#tutorials .section-title').textContent = t.tutorialTitle;
@@ -362,8 +350,7 @@ function verifyPayment() {
     }
 }
 
-// Video upload handlers
-document.getElementById('insertVideo')?.addEventListener('change', handleVideoUpload);
+// Video upload handlers removed - now redirects to external page
 
 function handleVideoUpload(e) {
     const t = translations[currentLanguage];
