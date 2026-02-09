@@ -364,7 +364,6 @@ function verifyPayment() {
 
 // Video upload handlers
 document.getElementById('insertVideo')?.addEventListener('change', handleVideoUpload);
-document.getElementById('uploadVideo')?.addEventListener('change', handleVideoUpload);
 
 function handleVideoUpload(e) {
     const t = translations[currentLanguage];
