@@ -1,6 +1,13 @@
 // Language translations
 const translations = {
     en: {
+        // Login Section
+        loginTitle: "Login to People Reader™",
+        loginBtn: "Login",
+        loginUsernameLabel: "User Name",
+        loginPasswordLabel: "Password",
+        loginError: "Invalid username or password!",
+        
         // Navigation
         navHome: "Home",
         navAccount: "Create Account",
@@ -63,6 +70,13 @@ const translations = {
         videosRemainingMsg: "video(s) remaining."
     },
     th: {
+        // Login Section
+        loginTitle: "เข้าสู่ระบบ People Reader™",
+        loginBtn: "เข้าสู่ระบบ",
+        loginUsernameLabel: "ชื่อผู้ใช้",
+        loginPasswordLabel: "รหัสผ่าน",
+        loginError: "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง!",
+        
         // Navigation
         navHome: "หน้าแรก",
         navAccount: "สร้างบัญชี",
@@ -162,6 +176,24 @@ function updateLanguage() {
     document.getElementById('currentLang').textContent = currentLanguage.toUpperCase();
     document.getElementById('otherLang').textContent = currentLanguage === 'en' ? 'TH' : 'EN';
     
+    // Update Login section
+    const loginTitle = document.querySelector('#loginSection .section-title');
+    if (loginTitle) {
+        loginTitle.textContent = t.loginTitle;
+    }
+    const loginUsernameLabel = document.querySelector('label[for="loginUsername"]');
+    if (loginUsernameLabel) {
+        loginUsernameLabel.textContent = t.loginUsernameLabel;
+    }
+    const loginPasswordLabel = document.querySelector('label[for="loginPassword"]');
+    if (loginPasswordLabel) {
+        loginPasswordLabel.textContent = t.loginPasswordLabel;
+    }
+    const loginBtn = document.querySelector('#loginForm button[type="submit"]');
+    if (loginBtn) {
+        loginBtn.textContent = t.loginBtn;
+    }
+    
     // Update navigation
     document.querySelector('a[href="#home"]').textContent = t.navHome;
     document.querySelector('a[href="#account"]').textContent = t.navAccount;
@@ -175,7 +207,11 @@ function updateLanguage() {
     document.querySelectorAll('.card-title')[0].textContent = t.qrTitle;
     document.querySelector('.card-instruction').textContent = t.qrInstruction;
     document.querySelectorAll('.card-title')[1].textContent = t.uploadConfirmTitle;
-    document.querySelectorAll('.btn-primary')[0].textContent = t.uploadSlipBtn;
+    // Update the upload slip button specifically (not the login button)
+    const uploadSlipBtn = document.querySelector('.upload-area .btn-primary');
+    if (uploadSlipBtn) {
+        uploadSlipBtn.textContent = t.uploadSlipBtn;
+    }
     document.querySelector('.file-format').textContent = t.fileFormat;
     document.querySelector('label[for="paymentAmount"]').textContent = t.amountLabel;
     document.getElementById('paymentAmount').placeholder = t.amountPlaceholder;
@@ -627,14 +663,23 @@ document.getElementById('loginForm')?.addEventListener('submit', function(e) {
     const username = document.getElementById('loginUsername').value.trim();
     const password = document.getElementById('loginPassword').value;
     const loginError = document.getElementById('loginError');
+    const t = translations[currentLanguage];
     
     // Get users from localStorage
     const users = JSON.parse(localStorage.getItem('users') || '{}');
     
-    // Check credentials
-    if (users[username] && users[username] === password) {
-        // Login successful
-        currentUser = username;
+    // Check credentials (case-insensitive username check)
+    let foundUsername = null;
+    for (let key in users) {
+        if (key.toLowerCase() === username.toLowerCase()) {
+            foundUsername = key;
+            break;
+        }
+    }
+    
+    if (foundUsername && users[foundUsername] === password) {
+        // Login successful - use the actual stored username (preserves case)
+        currentUser = foundUsername;
         sessionStorage.setItem('currentUser', currentUser);
         
         // Clear form
@@ -647,7 +692,7 @@ document.getElementById('loginForm')?.addEventListener('submit', function(e) {
         showMessage(`Welcome back, ${currentUser}!`, 'success');
     } else {
         // Login failed
-        loginError.textContent = 'Invalid username or password!';
+        loginError.textContent = t.loginError;
         loginError.style.display = 'block';
         loginError.style.color = '#dc3545';
         loginError.style.marginTop = '10px';
