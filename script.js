@@ -7,6 +7,8 @@ const translations = {
         loginUsernameLabel: "User Name",
         loginPasswordLabel: "Password",
         loginError: "Invalid username or password!",
+        newUserMessage: "Don't have an account?",
+        createAccountLink: "Create one here",
         
         // Navigation
         navHome: "Home",
@@ -76,6 +78,8 @@ const translations = {
         loginUsernameLabel: "ชื่อผู้ใช้",
         loginPasswordLabel: "รหัสผ่าน",
         loginError: "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง!",
+        newUserMessage: "ยังไม่มีบัญชี?",
+        createAccountLink: "สร้างบัญชีที่นี่",
         
         // Navigation
         navHome: "หน้าแรก",
@@ -192,6 +196,13 @@ function updateLanguage() {
     const loginBtn = document.querySelector('#loginForm button[type="submit"]');
     if (loginBtn) {
         loginBtn.textContent = t.loginBtn;
+    }
+    const newUserText = document.getElementById('newUserText');
+    if (newUserText) {
+        const createLink = document.getElementById('createAccountLink');
+        newUserText.innerHTML = `${t.newUserMessage} <a href="#" id="createAccountLink" class="create-account-link">${t.createAccountLink}</a>`;
+        // Re-attach event listener after updating innerHTML
+        document.getElementById('createAccountLink')?.addEventListener('click', handleCreateAccountClick);
     }
     
     // Update navigation
@@ -619,6 +630,32 @@ inputs.forEach(input => {
 });
 
 // ==================== AUTHENTICATION SYSTEM ====================
+
+// Handle create account link click from login page
+function handleCreateAccountClick(e) {
+    e.preventDefault();
+    
+    // Show main content first
+    document.getElementById('loginSection').style.display = 'none';
+    document.getElementById('mainContent').style.display = 'block';
+    document.getElementById('mainNav').style.display = 'block';
+    
+    // Navigate to account section
+    scrollToSection('account');
+    
+    // Update nav links
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#account') {
+            link.classList.add('active');
+        }
+    });
+}
+
+// Attach event listener to create account link
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('createAccountLink')?.addEventListener('click', handleCreateAccountClick);
+});
 
 // Check if user is already logged in
 function checkAuthStatus() {

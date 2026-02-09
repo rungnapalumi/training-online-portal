@@ -772,6 +772,32 @@ button:disabled:hover {
     text-align: center;
 }
 
+/* New User Message */
+.new-user-message {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #ddd;
+    text-align: center;
+}
+
+.new-user-message p {
+    color: #666;
+    font-size: 0.95rem;
+    margin: 0;
+}
+
+.create-account-link {
+    color: #a0826d;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.create-account-link:hover {
+    color: #8b6f5c;
+    text-decoration: underline;
+}
+
 /* Button Small */
 .btn-small {
     padding: 5px 12px;
