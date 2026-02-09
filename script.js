@@ -126,6 +126,24 @@ const translations = {
     }
 };
 
+// Initialize user system with Admin account
+function initializeUserSystem() {
+    let users = localStorage.getItem('users');
+    if (!users) {
+        // Create initial admin account
+        const initialUsers = {
+            'Admin': '0108'
+        };
+        localStorage.setItem('users', JSON.stringify(initialUsers));
+    }
+}
+
+// Call initialization on script load
+initializeUserSystem();
+
+// Current user session
+let currentUser = sessionStorage.getItem('currentUser') || null;
+
 // Current language (default: English)
 let currentLanguage = localStorage.getItem('language') || 'en';
 
@@ -465,66 +483,7 @@ function togglePassword(inputId, button) {
     }
 }
 
-// Create account form handler
-document.getElementById('createAccountForm')?.addEventListener('submit', function(e) {
-    e.preventDefault();
-    const t = translations[currentLanguage];
-    
-    // Check if payment is verified
-    const paymentVerified = sessionStorage.getItem('paymentVerified');
-    if (paymentVerified !== 'true') {
-        showMessage(t.paymentRequired, 'error');
-        scrollToSection('home');
-        return;
-    }
-    
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
-    const confirmPassword = document.getElementById('confirmPassword').value;
-    
-    // Validation
-    if (username.length < 3) {
-        showMessage(t.usernameShort, 'error');
-        return;
-    }
-    
-    if (password.length < 8) {
-        showMessage(t.passwordShort, 'error');
-        return;
-    }
-    
-    if (password !== confirmPassword) {
-        showMessage(t.passwordMismatch, 'error');
-        return;
-    }
-    
-    // Success - Show success message
-    const messageDiv = document.getElementById('accountCreatedMessage');
-    const usernameDisplay = messageDiv.querySelector('.account-username');
-    
-    usernameDisplay.textContent = `${t.accountWelcome}, ${username}!`;
-    
-    // Hide form inputs and submit button
-    const formGroups = this.querySelectorAll('.form-group');
-    const submitButton = this.querySelector('button[type="submit"]');
-    
-    formGroups.forEach(group => group.style.display = 'none');
-    submitButton.style.display = 'none';
-    
-    // Show success message
-    messageDiv.style.display = 'block';
-    
-    // Store account info
-    sessionStorage.setItem('accountCreated', 'true');
-    sessionStorage.setItem('username', username);
-    sessionStorage.setItem('videoUploadsRemaining', '3');
-    
-    // In a real application, you would send this data to a server
-    console.log('Account created:', { username, password: '***', paymentVerified: true, videoQuota: 3 });
-    
-    // Scroll to show the message
-    messageDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
-});
+// Create account form handler is now in the authentication section below
 
 // Videos are now embedded YouTube iframes - no additional JavaScript needed for playback
 
@@ -621,6 +580,304 @@ inputs.forEach(input => {
     input.addEventListener('focus', function() {
         this.style.borderColor = '#a0826d';
     });
+});
+
+// ==================== AUTHENTICATION SYSTEM ====================
+
+// Check if user is already logged in
+function checkAuthStatus() {
+    if (currentUser) {
+        showMainContent();
+    } else {
+        showLoginPage();
+    }
+}
+
+// Show login page
+function showLoginPage() {
+    document.getElementById('loginSection').style.display = 'block';
+    document.getElementById('mainContent').style.display = 'none';
+    document.getElementById('mainNav').style.display = 'none';
+    document.getElementById('logoutBtn').style.display = 'none';
+    document.getElementById('adminPanelBtn').style.display = 'none';
+    document.getElementById('userInfo').style.display = 'none';
+}
+
+// Show main content
+function showMainContent() {
+    document.getElementById('loginSection').style.display = 'none';
+    document.getElementById('mainContent').style.display = 'block';
+    document.getElementById('mainNav').style.display = 'block';
+    document.getElementById('logoutBtn').style.display = 'inline-block';
+    document.getElementById('userInfo').style.display = 'inline-block';
+    document.getElementById('userInfo').textContent = `Welcome, ${currentUser}!`;
+    
+    // Show admin panel button only for Admin
+    if (currentUser === 'Admin') {
+        document.getElementById('adminPanelBtn').style.display = 'inline-block';
+    } else {
+        document.getElementById('adminPanelBtn').style.display = 'none';
+    }
+}
+
+// Login form handler
+document.getElementById('loginForm')?.addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const username = document.getElementById('loginUsername').value.trim();
+    const password = document.getElementById('loginPassword').value;
+    const loginError = document.getElementById('loginError');
+    
+    // Get users from localStorage
+    const users = JSON.parse(localStorage.getItem('users') || '{}');
+    
+    // Check credentials
+    if (users[username] && users[username] === password) {
+        // Login successful
+        currentUser = username;
+        sessionStorage.setItem('currentUser', currentUser);
+        
+        // Clear form
+        document.getElementById('loginForm').reset();
+        loginError.style.display = 'none';
+        
+        // Show main content
+        showMainContent();
+        
+        showMessage(`Welcome back, ${currentUser}!`, 'success');
+    } else {
+        // Login failed
+        loginError.textContent = 'Invalid username or password!';
+        loginError.style.display = 'block';
+        loginError.style.color = '#dc3545';
+        loginError.style.marginTop = '10px';
+        loginError.style.textAlign = 'center';
+    }
+});
+
+// Logout function
+function logout() {
+    currentUser = null;
+    sessionStorage.removeItem('currentUser');
+    sessionStorage.removeItem('accountCreated');
+    sessionStorage.removeItem('paymentVerified');
+    sessionStorage.removeItem('videoUploadsRemaining');
+    
+    // Hide admin panel if open
+    document.getElementById('adminPanel').style.display = 'none';
+    
+    showLoginPage();
+    
+    // Clear any forms
+    document.getElementById('loginForm')?.reset();
+}
+
+// ==================== ADMIN PANEL FUNCTIONS ====================
+
+// Open admin panel
+function openAdminPanel() {
+    if (currentUser !== 'Admin') {
+        showMessage('Access denied! Admin only.', 'error');
+        return;
+    }
+    
+    // Hide other sections and show admin panel
+    document.querySelectorAll('#mainContent > section').forEach(section => {
+        section.style.display = 'none';
+    });
+    document.getElementById('adminPanel').style.display = 'block';
+    
+    // Load user list
+    loadUserList();
+}
+
+// Close admin panel
+function closeAdminPanel() {
+    document.getElementById('adminPanel').style.display = 'none';
+    document.getElementById('home').style.display = 'block';
+    
+    // Update active nav
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#home') {
+            link.classList.add('active');
+        }
+    });
+}
+
+// Load user list
+function loadUserList() {
+    const users = JSON.parse(localStorage.getItem('users') || '{}');
+    const userListDiv = document.getElementById('userList');
+    
+    if (Object.keys(users).length === 0) {
+        userListDiv.innerHTML = '<p>No users found.</p>';
+        return;
+    }
+    
+    let html = '<table class="user-table"><thead><tr><th>Username</th><th>Password</th><th>Actions</th></tr></thead><tbody>';
+    
+    for (let username in users) {
+        const password = users[username];
+        const isAdmin = username === 'Admin';
+        
+        html += `
+            <tr>
+                <td><strong>${username}</strong></td>
+                <td>${password}</td>
+                <td>
+                    ${!isAdmin ? `<button class="btn btn-danger btn-small" onclick="deleteUser('${username}')">Delete</button>` : '<span style="color: #999;">Admin (Cannot delete)</span>'}
+                </td>
+            </tr>
+        `;
+    }
+    
+    html += '</tbody></table>';
+    userListDiv.innerHTML = html;
+}
+
+// Delete user (Admin only)
+function deleteUser(username) {
+    if (currentUser !== 'Admin') {
+        showMessage('Access denied! Admin only.', 'error');
+        return;
+    }
+    
+    if (username === 'Admin') {
+        showMessage('Cannot delete Admin account!', 'error');
+        return;
+    }
+    
+    if (confirm(`Are you sure you want to delete user: ${username}?`)) {
+        const users = JSON.parse(localStorage.getItem('users') || '{}');
+        delete users[username];
+        localStorage.setItem('users', JSON.stringify(users));
+        
+        showMessage(`User "${username}" deleted successfully!`, 'success');
+        loadUserList();
+    }
+}
+
+// Admin create user form
+document.getElementById('adminCreateUserForm')?.addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    if (currentUser !== 'Admin') {
+        showMessage('Access denied! Admin only.', 'error');
+        return;
+    }
+    
+    const username = document.getElementById('adminNewUsername').value.trim();
+    const password = document.getElementById('adminNewPassword').value;
+    
+    if (username.length < 3) {
+        showMessage('Username must be at least 3 characters long', 'error');
+        return;
+    }
+    
+    if (password.length < 4) {
+        showMessage('Password must be at least 4 characters long', 'error');
+        return;
+    }
+    
+    const users = JSON.parse(localStorage.getItem('users') || '{}');
+    
+    if (users[username]) {
+        showMessage(`Username "${username}" already exists!`, 'error');
+        return;
+    }
+    
+    // Add new user
+    users[username] = password;
+    localStorage.setItem('users', JSON.stringify(users));
+    
+    // Clear form
+    this.reset();
+    
+    showMessage(`User "${username}" created successfully!`, 'success');
+    loadUserList();
+});
+
+// ==================== UPDATE CREATE ACCOUNT FORM ====================
+
+// Update the existing create account form to also store in users
+const originalCreateAccountHandler = document.getElementById('createAccountForm');
+if (originalCreateAccountHandler) {
+    originalCreateAccountHandler.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const t = translations[currentLanguage];
+        
+        // Check if payment is verified
+        const paymentVerified = sessionStorage.getItem('paymentVerified');
+        if (paymentVerified !== 'true') {
+            showMessage(t.paymentRequired, 'error');
+            scrollToSection('home');
+            return;
+        }
+        
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+        
+        // Validation
+        if (username.length < 3) {
+            showMessage(t.usernameShort, 'error');
+            return;
+        }
+        
+        if (password.length < 8) {
+            showMessage(t.passwordShort, 'error');
+            return;
+        }
+        
+        if (password !== confirmPassword) {
+            showMessage(t.passwordMismatch, 'error');
+            return;
+        }
+        
+        // Check if username already exists
+        const users = JSON.parse(localStorage.getItem('users') || '{}');
+        if (users[username]) {
+            showMessage('Username already exists! Please choose a different username.', 'error');
+            return;
+        }
+        
+        // Add user to system
+        users[username] = password;
+        localStorage.setItem('users', JSON.stringify(users));
+        
+        // Success - Show success message
+        const messageDiv = document.getElementById('accountCreatedMessage');
+        const usernameDisplay = messageDiv.querySelector('.account-username');
+        
+        usernameDisplay.textContent = `${t.accountWelcome}, ${username}!`;
+        
+        // Hide form inputs and submit button
+        const formGroups = this.querySelectorAll('.form-group');
+        const submitButton = this.querySelector('button[type="submit"]');
+        
+        formGroups.forEach(group => group.style.display = 'none');
+        submitButton.style.display = 'none';
+        
+        // Show success message
+        messageDiv.style.display = 'block';
+        
+        // Store account info
+        sessionStorage.setItem('accountCreated', 'true');
+        sessionStorage.setItem('username', username);
+        sessionStorage.setItem('videoUploadsRemaining', '3');
+        
+        // Scroll to show the message
+        messageDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+}
+
+// ==================== PAGE LOAD ====================
+
+// Check authentication status on page load
+window.addEventListener('DOMContentLoaded', function() {
+    checkAuthStatus();
+    updateLanguage();
 });
 
 console.log('People Reader™ - Training Online Portal loaded successfully!');
