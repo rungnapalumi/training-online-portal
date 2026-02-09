@@ -2,11 +2,12 @@
 const translations = {
     en: {
         // Login Section
-        loginTitle: "Login to People Reader™",
+        loginTitle: "Login to AI People Reader™",
         loginBtn: "Login",
         loginUsernameLabel: "User Name",
         loginPasswordLabel: "Password",
         loginError: "Invalid username or password!",
+        loginRequired: "Please login first to access the upload page!",
         newUserMessage: "Don't have an account?",
         createAccountLink: "Create one here",
         
@@ -52,7 +53,7 @@ const translations = {
         playBtn: "▶ Play",
         
         // Footer
-        footerText: "© 2026 People Reader™. All rights reserved.",
+        footerText: "© 2026 AI People Reader™. All rights reserved.",
         
         // Messages
         paymentVerified: "✓ Payment verified! Amount is correct (500 THB). You can now create your account.",
@@ -73,11 +74,12 @@ const translations = {
     },
     th: {
         // Login Section
-        loginTitle: "เข้าสู่ระบบ People Reader™",
+        loginTitle: "เข้าสู่ระบบ AI People Reader™",
         loginBtn: "เข้าสู่ระบบ",
         loginUsernameLabel: "ชื่อผู้ใช้",
         loginPasswordLabel: "รหัสผ่าน",
         loginError: "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง!",
+        loginRequired: "กรุณาเข้าสู่ระบบก่อนเพื่อเข้าถึงหน้าอัปโหลด!",
         newUserMessage: "ยังไม่มีบัญชี?",
         createAccountLink: "สร้างบัญชีที่นี่",
         
@@ -123,7 +125,7 @@ const translations = {
         playBtn: "▶ เล่น",
         
         // Footer
-        footerText: "© 2026 People Reader™ สงวนลิขสิทธิ์",
+        footerText: "© 2026 AI People Reader™ สงวนลิขสิทธิ์",
         
         // Messages
         paymentVerified: "✓ ตรวจสอบการชำระเงินสำเร็จ! จำนวนเงินถูกต้อง (500 บาท) คุณสามารถสร้างบัญชีได้แล้ว",
@@ -962,5 +964,22 @@ window.addEventListener('DOMContentLoaded', function() {
     updateLanguage();
 });
 
-console.log('People Reader™ - Training Online Portal loaded successfully!');
+// Function to navigate to external upload page (requires login)
+function goToUploadPage() {
+    const t = translations[currentLanguage];
+    
+    // Check if user is logged in
+    if (!currentUser) {
+        showMessage(t.loginRequired || 'Please login first to access the upload page!', 'error');
+        setTimeout(() => {
+            showLoginPage();
+        }, 1500);
+        return;
+    }
+    
+    // User is logged in, redirect to external upload page
+    window.location.href = 'https://ai-people-reader-v2.onrender.com/Submit_Job';
+}
+
+console.log('AI People Reader™ - Training Online Portal loaded successfully!');
 
