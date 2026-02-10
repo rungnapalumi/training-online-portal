@@ -138,6 +138,27 @@ body {
     font-weight: 500;
 }
 
+.description-text {
+    max-width: 900px;
+    margin: 0 auto 30px;
+    padding: 25px;
+    background-color: #f9f7f5;
+    border-left: 4px solid #a0826d;
+    border-radius: 8px;
+}
+
+.description-text p {
+    color: #5c4a3a;
+    font-size: 1rem;
+    line-height: 1.8;
+    margin-bottom: 15px;
+    text-align: justify;
+}
+
+.description-text p:last-child {
+    margin-bottom: 0;
+}
+
 .instruction-text {
     text-align: center;
     color: #666;

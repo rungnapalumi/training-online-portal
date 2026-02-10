@@ -19,6 +19,8 @@ const translations = {
         
         // Home Section
         homeTitle: "Movement in Communication",
+        homeDescription1: "In presentations, what speakers often overlook is their body movement and hand gestures that accompany speech. These can communicate nervousness, hesitation, lack of confidence, or untrustworthiness. In addition, habitual movements may make the speaker appear distracting, irritating, or difficult to follow.",
+        homeDescription2: "In a good presentation, engagement — the ability to connect with the audience — is the most important factor. Therefore, body and hand movements are factors that must be studied in order to make a presentation interesting, natural, and engaging. However, because most people cannot see themselves while presenting, it is necessary to receive structured, principle-based guidance.",
         homeSubtitle: "Access the Movement Analysis Tool",
         homeInstruction: "Please complete the payment before uploading your video for analysis.",
         qrTitle: "Scan QR Code to Pay",
@@ -91,6 +93,8 @@ const translations = {
         
         // Home Section
         homeTitle: "การเคลื่อนไหวในการสื่อสาร",
+        homeDescription1: "การนำเสนอผ่านอวัจนภาษา ในการนำเสนอนั้นสิ่งที่ผู้พูดมักมองข้ามคือการเคลื่อนไหวของตัวและภาษามือที่มาประกอบคำพูด สิ่งเหล่านี้สามารถสื่อสารถึงความตื่นเต้น ลังเล ไม่มั่นใจ ไม่น่าเชื่อถือ นอกจากนั้นการเคลื่อนไหวที่ติดเป็นนิสัยยังอาจทำให้ดูน่ารำคาญ และไม่น่าติดตาม",
+        homeDescription2: "ในการนำเสนอที่ดีนั้น engagement หรือการเข้าถึงผู้ฟังสำคัญที่สุด การเคลื่อนไหวของตัวและมือจึงเป็นสิ่งที่จำเป็นต้องศึกษา เพื่อให้การนำเสนอดูน่าสนใจ เป็นธรรมชาติ และน่าติดตาม แต่เพราะคนส่วนใหญ่ไม่เห็นตัวเองในขณะที่นำเสนอ จึงจำเป็นที่จะต้องได้รับการชี้แนะแบบมีหลักการ",
         homeSubtitle: "เข้าสู่เครื่องมือวิเคราะห์การเคลื่อนไหว",
         homeInstruction: "กรุณาชำระเงินก่อนอัปโหลดวิดีโอของคุณเพื่อการวิเคราะห์",
         qrTitle: "สแกน QR Code เพื่อชำระเงิน",
@@ -226,6 +230,11 @@ function updateLanguage() {
     
     // Update Home section
     document.querySelector('#home .section-title').textContent = t.homeTitle;
+    const descriptionParas = document.querySelectorAll('#home .description-text p');
+    if (descriptionParas.length >= 2) {
+        descriptionParas[0].textContent = t.homeDescription1;
+        descriptionParas[1].textContent = t.homeDescription2;
+    }
     document.querySelector('#home .section-subtitle').textContent = t.homeSubtitle;
     document.querySelector('#home .instruction-text').textContent = t.homeInstruction;
     document.querySelectorAll('.card-title')[0].textContent = t.qrTitle;
