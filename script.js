@@ -46,7 +46,13 @@ const translations = {
         
         // Upload Section
         uploadTitle: "Upload Your Video for Analysis",
+        uploadUsernameLabel: "User Name",
+        uploadPasswordLabel: "Password",
         uploadVideoBtn: "Go to the upload video page",
+        uploadAuthError: "Please enter username and password!",
+        uploadAuthSuccess: "✓ Authentication successful! Redirecting...",
+        uploadAuthFailed: "✗ Invalid username or password! Please try again.",
+        videoAccessDenied: "Please login in the \"Upload Video\" section to access tutorial videos!",
         
         // Tutorial Section
         tutorialTitle: "Online Tutorial",
@@ -120,7 +126,13 @@ const translations = {
         
         // Upload Section
         uploadTitle: "อัปโหลดวิดีโอของคุณเพื่อการวิเคราะห์",
+        uploadUsernameLabel: "ชื่อผู้ใช้",
+        uploadPasswordLabel: "รหัสผ่าน",
         uploadVideoBtn: "ไปที่หน้าอัปโหลดวิดีโอ",
+        uploadAuthError: "กรุณาใส่ชื่อผู้ใช้และรหัสผ่าน!",
+        uploadAuthSuccess: "✓ ยืนยันตัวตนสำเร็จ! กำลังเปลี่ยนหน้า...",
+        uploadAuthFailed: "✗ ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง! กรุณาลองอีกครั้ง",
+        videoAccessDenied: "กรุณาเข้าสู่ระบบในส่วน \"อัปโหลดวิดีโอ\" เพื่อเข้าถึงวิดีโอบทเรียน!",
         
         // Tutorial Section
         tutorialTitle: "บทเรียนออนไลน์",
@@ -273,9 +285,25 @@ function updateLanguage() {
     
     // Update Upload section
     document.querySelector('#upload .section-title').textContent = t.uploadTitle;
+    const uploadUsernameLabel = document.querySelector('label[for="uploadUsername"]');
+    if (uploadUsernameLabel) {
+        uploadUsernameLabel.textContent = t.uploadUsernameLabel;
+    }
+    const uploadPasswordLabel = document.querySelector('label[for="uploadPassword"]');
+    if (uploadPasswordLabel) {
+        uploadPasswordLabel.textContent = t.uploadPasswordLabel;
+    }
     const uploadBtn = document.querySelector('.btn-upload');
     if (uploadBtn) {
         uploadBtn.textContent = t.uploadVideoBtn;
+    }
+    const uploadUsernameInput = document.getElementById('uploadUsername');
+    if (uploadUsernameInput) {
+        uploadUsernameInput.placeholder = currentLanguage === 'en' ? 'Enter your username' : 'ใส่ชื่อผู้ใช้ของคุณ';
+    }
+    const uploadPasswordInput = document.getElementById('uploadPassword');
+    if (uploadPasswordInput) {
+        uploadPasswordInput.placeholder = currentLanguage === 'en' ? 'Enter your password' : 'ใส่รหัสผ่านของคุณ';
     }
     
     // Update Tutorial section
@@ -1036,11 +1064,137 @@ window.addEventListener('DOMContentLoaded', function() {
     updateLanguage();
 });
 
-// Function to navigate to external upload page (no login required)
+// Function to navigate to external upload page (requires authentication)
 function goToUploadPage() {
-    // Redirect directly to external upload page
-    window.location.href = 'https://ai-people-reader-v2.onrender.com/Submit_Job';
+    const t = translations[currentLanguage];
+    const username = document.getElementById('uploadUsername').value.trim();
+    const password = document.getElementById('uploadPassword').value;
+    const errorMsg = document.getElementById('uploadAuthError');
+    
+    // Check if fields are filled
+    if (!username || !password) {
+        errorMsg.textContent = currentLanguage === 'en' 
+            ? 'Please enter username and password!'
+            : 'กรุณาใส่ชื่อผู้ใช้และรหัสผ่าน!';
+        errorMsg.style.display = 'block';
+        errorMsg.style.color = '#dc3545';
+        errorMsg.style.marginTop = '15px';
+        errorMsg.style.textAlign = 'center';
+        return;
+    }
+    
+    // Get users from localStorage
+    const users = JSON.parse(localStorage.getItem('users') || '{}');
+    
+    // Check credentials (case-insensitive username)
+    let foundUsername = null;
+    for (let key in users) {
+        if (key.toLowerCase() === username.toLowerCase()) {
+            foundUsername = key;
+            break;
+        }
+    }
+    
+    if (foundUsername && users[foundUsername] === password) {
+        // Authentication successful
+        sessionStorage.setItem('videoAccessGranted', 'true');
+        sessionStorage.setItem('authenticatedUser', foundUsername);
+        
+        errorMsg.textContent = currentLanguage === 'en'
+            ? '✓ Authentication successful! Redirecting...'
+            : '✓ ยืนยันตัวตนสำเร็จ! กำลังเปลี่ยนหน้า...';
+        errorMsg.style.color = '#28a745';
+        errorMsg.style.display = 'block';
+        
+        // Redirect to external upload page
+        setTimeout(() => {
+            window.location.href = 'https://ai-people-reader-v2.onrender.com/Submit_Job';
+        }, 1000);
+    } else {
+        // Authentication failed
+        errorMsg.textContent = currentLanguage === 'en'
+            ? '✗ Invalid username or password! Please try again.'
+            : '✗ ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง! กรุณาลองอีกครั้ง';
+        errorMsg.style.color = '#dc3545';
+        errorMsg.style.display = 'block';
+        sessionStorage.removeItem('videoAccessGranted');
+        sessionStorage.removeItem('authenticatedUser');
+    }
 }
+
+// Protect tutorial videos - require authentication
+function protectTutorialVideos() {
+    const videos = document.querySelectorAll('#tutorials video');
+    
+    videos.forEach(video => {
+        // Remove default controls
+        video.removeAttribute('controls');
+        
+        // Add click event to check authentication
+        video.addEventListener('click', function(e) {
+            e.preventDefault();
+            checkVideoAccess(this);
+        });
+        
+        // Prevent play without authentication
+        video.addEventListener('play', function(e) {
+            const hasAccess = sessionStorage.getItem('videoAccessGranted') === 'true';
+            if (!hasAccess) {
+                e.preventDefault();
+                this.pause();
+                showVideoAccessError();
+            }
+        });
+        
+        // Add custom play button overlay
+        const videoContainer = video.parentElement;
+        const playOverlay = document.createElement('div');
+        playOverlay.className = 'video-play-overlay';
+        playOverlay.innerHTML = '<div class="play-icon">▶</div>';
+        playOverlay.onclick = () => checkVideoAccess(video);
+        videoContainer.appendChild(playOverlay);
+    });
+}
+
+// Check video access and play if authenticated
+function checkVideoAccess(video) {
+    const hasAccess = sessionStorage.getItem('videoAccessGranted') === 'true';
+    
+    if (hasAccess) {
+        // Grant access - add controls and allow playback
+        video.setAttribute('controls', 'controls');
+        video.play();
+        
+        // Hide play overlay
+        const overlay = video.parentElement.querySelector('.video-play-overlay');
+        if (overlay) {
+            overlay.style.display = 'none';
+        }
+    } else {
+        showVideoAccessError();
+    }
+}
+
+// Show error message for video access
+function showVideoAccessError() {
+    const message = currentLanguage === 'en'
+        ? 'Please login in the "Upload Video" section to access tutorial videos!'
+        : 'กรุณาเข้าสู่ระบบในส่วน "อัปโหลดวิดีโอ" เพื่อเข้าถึงวิดีโอบทเรียน!';
+    
+    showMessage(message, 'error');
+    
+    // Scroll to upload section
+    setTimeout(() => {
+        scrollToSection('upload');
+    }, 1500);
+}
+
+// Initialize video protection on page load
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(() => {
+        protectTutorialVideos();
+    }, 500);
+});
 
 console.log('AI People Reader™ - Training Online Portal loaded successfully!');
 

@@ -174,11 +174,30 @@
                 <h2 class="section-title">Upload Your Video for Analysis</h2>
                 
                 <div class="upload-video-section">
+                    <!-- Authentication Form -->
+                    <div class="upload-auth-form">
+                        <div class="form-group">
+                            <label for="uploadUsername">User Name</label>
+                            <input type="text" id="uploadUsername" placeholder="Enter your username">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="uploadPassword">Password</label>
+                            <div class="password-input-wrapper">
+                                <input type="password" id="uploadPassword" placeholder="Enter your password">
+                                <button type="button" class="toggle-password" onclick="togglePassword('uploadPassword', this)">
+                                    👁️
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <div class="upload-buttons">
                         <button class="btn btn-primary btn-upload" onclick="goToUploadPage()">
                             Go to the upload video page
                         </button>
                     </div>
+                    <p id="uploadAuthError" class="auth-error-message" style="display: none;"></p>
                 </div>
             </div>
         </section>
