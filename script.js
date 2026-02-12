@@ -73,7 +73,7 @@ const translations = {
         enterAmount: "Please enter the payment amount!",
         paymentRequired: "Please upload payment slip, verify amount is 500 THB before creating account!",
         usernameShort: "Username must be at least 3 characters long",
-        passwordShort: "Password must be at least 8 characters long",
+        passwordShort: "Password must be at least 4 characters long",
         passwordMismatch: "Passwords do not match",
         accountCreatedMsg: "Account created successfully for",
         paymentVerifiedMsg: "Payment verified:",
@@ -155,7 +155,7 @@ const translations = {
         enterAmount: "กรุณาใส่จำนวนเงินที่ชำระ!",
         paymentRequired: "กรุณาอัปโหลดสลิปการชำระเงิน ตรวจสอบจำนวนเงิน 500 บาท ก่อนสร้างบัญชี!",
         usernameShort: "ชื่อผู้ใช้ต้องมีอย่างน้อย 3 ตัวอักษร",
-        passwordShort: "รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร",
+        passwordShort: "รหัสผ่านต้องมีอย่างน้อย 4 ตัวอักษร",
         passwordMismatch: "รหัสผ่านไม่ตรงกัน",
         accountCreatedMsg: "สร้างบัญชีสำเร็จสำหรับ",
         paymentVerifiedMsg: "ตรวจสอบการชำระเงิน:",
@@ -1022,7 +1022,7 @@ if (originalCreateAccountHandler) {
             return;
         }
         
-        if (password.length < 8) {
+        if (password.length < 4) {
             showMessage(t.passwordShort, 'error');
             return;
         }
