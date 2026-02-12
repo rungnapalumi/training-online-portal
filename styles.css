@@ -927,6 +927,16 @@ button:disabled:hover {
     margin-top: 20px;
 }
 
+/* Pulse animation for create account button */
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
 /* Login Error */
 .login-error {
     color: #dc3545;

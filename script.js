@@ -381,6 +381,19 @@ function scrollToSection(sectionId) {
             block: 'start'
         });
         
+        // Highlight the account form temporarily
+        if (sectionId === 'account') {
+            const accountForm = document.getElementById('createAccountForm');
+            if (accountForm) {
+                accountForm.style.border = '3px solid #28a745';
+                accountForm.style.boxShadow = '0 0 20px rgba(40, 167, 69, 0.5)';
+                setTimeout(() => {
+                    accountForm.style.border = '';
+                    accountForm.style.boxShadow = '';
+                }, 5000);
+            }
+        }
+        
         // Update active nav link
         document.querySelectorAll('.nav-link').forEach(link => {
             link.classList.remove('active');
@@ -461,11 +474,21 @@ function verifyPayment() {
         paymentStatus.textContent = successMsg;
         paymentStatus.className = 'payment-status success';
         createAccountBtn.disabled = false;
+        createAccountBtn.style.backgroundColor = '#28a745';
+        createAccountBtn.style.animation = 'pulse 2s infinite';
         
         // Store verification status
         sessionStorage.setItem('paymentVerified', 'true');
         
         showMessage(successMsg, 'success');
+        
+        // Auto-scroll to account section after 2 seconds
+        setTimeout(() => {
+            scrollToSection('account');
+            showMessage(currentLanguage === 'en' 
+                ? 'Please fill in your account information below ⬇️' 
+                : 'กรุณากรอกข้อมูลบัญชีของคุณด้านล่าง ⬇️', 'success');
+        }, 2000);
     } else {
         const errorMsg = currentLanguage === 'en'
             ? `✗ Payment verification failed! Expected amount: ${requiredAmount} THB, but you entered: ${amount} THB. Please check your payment slip.`
