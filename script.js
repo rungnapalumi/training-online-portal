@@ -31,7 +31,7 @@ const translations = {
         amountLabel: "Payment Amount (THB):",
         amountPlaceholder: "Enter amount",
         verifyBtn: "Verify Payment",
-        createAccountBtn: "Create Account",
+        createAccountBtn: "⬇️ Scroll Down to Create Account ⬇️",
         
         // Account Section
         accountTitle: "Create Your Account",
@@ -113,7 +113,7 @@ const translations = {
         amountLabel: "จำนวนเงินที่ชำระ (บาท):",
         amountPlaceholder: "ใส่จำนวนเงิน",
         verifyBtn: "ตรวจสอบการชำระเงิน",
-        createAccountBtn: "สร้างบัญชี",
+        createAccountBtn: "⬇️ เลื่อนลงเพื่อสร้างบัญชี ⬇️",
         
         // Account Section
         accountTitle: "สร้างบัญชีของคุณ",
