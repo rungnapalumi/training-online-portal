@@ -48,10 +48,12 @@ const translations = {
         uploadTitle: "Upload Your Video for Analysis",
         uploadUsernameLabel: "User Name",
         uploadPasswordLabel: "Password",
+        uploadLoginBtn: "Login to Access Videos",
         uploadVideoBtn: "Go to the upload video page",
         uploadAuthError: "Please enter username and password!",
-        uploadAuthSuccess: "✓ Authentication successful! Redirecting...",
+        uploadAuthSuccess: "✓ Login successful! You can now watch tutorial videos and access the upload page.",
         uploadAuthFailed: "✗ Invalid username or password! Please try again.",
+        uploadPageDenied: "✗ Please login first to access the upload page!",
         videoAccessDenied: "Please login in the \"Upload Video\" section to access tutorial videos!",
         
         // Tutorial Section
@@ -128,10 +130,12 @@ const translations = {
         uploadTitle: "อัปโหลดวิดีโอของคุณเพื่อการวิเคราะห์",
         uploadUsernameLabel: "ชื่อผู้ใช้",
         uploadPasswordLabel: "รหัสผ่าน",
+        uploadLoginBtn: "เข้าสู่ระบบเพื่อดูวิดีโอ",
         uploadVideoBtn: "ไปที่หน้าอัปโหลดวิดีโอ",
         uploadAuthError: "กรุณาใส่ชื่อผู้ใช้และรหัสผ่าน!",
-        uploadAuthSuccess: "✓ ยืนยันตัวตนสำเร็จ! กำลังเปลี่ยนหน้า...",
+        uploadAuthSuccess: "✓ เข้าสู่ระบบสำเร็จ! คุณสามารถดูวิดีโอบทเรียนและเข้าถึงหน้าอัปโหลดได้แล้ว",
         uploadAuthFailed: "✗ ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง! กรุณาลองอีกครั้ง",
+        uploadPageDenied: "✗ กรุณาเข้าสู่ระบบก่อนเพื่อเข้าถึงหน้าอัปโหลด!",
         videoAccessDenied: "กรุณาเข้าสู่ระบบในส่วน \"อัปโหลดวิดีโอ\" เพื่อเข้าถึงวิดีโอบทเรียน!",
         
         // Tutorial Section
@@ -292,6 +296,10 @@ function updateLanguage() {
     const uploadPasswordLabel = document.querySelector('label[for="uploadPassword"]');
     if (uploadPasswordLabel) {
         uploadPasswordLabel.textContent = t.uploadPasswordLabel;
+    }
+    const uploadLoginBtn = document.querySelector('.upload-auth-form .btn-secondary');
+    if (uploadLoginBtn) {
+        uploadLoginBtn.textContent = t.uploadLoginBtn;
     }
     const uploadBtn = document.querySelector('.btn-upload');
     if (uploadBtn) {
@@ -1064,9 +1072,8 @@ window.addEventListener('DOMContentLoaded', function() {
     updateLanguage();
 });
 
-// Function to navigate to external upload page (requires authentication)
-function goToUploadPage() {
-    const t = translations[currentLanguage];
+// Authenticate user for video access (doesn't redirect)
+function authenticateUser() {
     const username = document.getElementById('uploadUsername').value.trim();
     const password = document.getElementById('uploadPassword').value;
     const errorMsg = document.getElementById('uploadAuthError');
@@ -1078,8 +1085,6 @@ function goToUploadPage() {
             : 'กรุณาใส่ชื่อผู้ใช้และรหัสผ่าน!';
         errorMsg.style.display = 'block';
         errorMsg.style.color = '#dc3545';
-        errorMsg.style.marginTop = '15px';
-        errorMsg.style.textAlign = 'center';
         return;
     }
     
@@ -1101,15 +1106,14 @@ function goToUploadPage() {
         sessionStorage.setItem('authenticatedUser', foundUsername);
         
         errorMsg.textContent = currentLanguage === 'en'
-            ? '✓ Authentication successful! Redirecting...'
-            : '✓ ยืนยันตัวตนสำเร็จ! กำลังเปลี่ยนหน้า...';
+            ? '✓ Login successful! You can now watch tutorial videos and access the upload page.'
+            : '✓ เข้าสู่ระบบสำเร็จ! คุณสามารถดูวิดีโอบทเรียนและเข้าถึงหน้าอัปโหลดได้แล้ว';
         errorMsg.style.color = '#28a745';
         errorMsg.style.display = 'block';
         
-        // Redirect to external upload page
-        setTimeout(() => {
-            window.location.href = 'https://ai-people-reader-v2.onrender.com/Submit_Job';
-        }, 1000);
+        showMessage(currentLanguage === 'en' 
+            ? '✓ Welcome! You can now watch all tutorial videos.' 
+            : '✓ ยินดีต้อนรับ! คุณสามารถดูวิดีโอบทเรียนทั้งหมดได้แล้ว', 'success');
     } else {
         // Authentication failed
         errorMsg.textContent = currentLanguage === 'en'
@@ -1120,6 +1124,32 @@ function goToUploadPage() {
         sessionStorage.removeItem('videoAccessGranted');
         sessionStorage.removeItem('authenticatedUser');
     }
+}
+
+// Handle Enter key press in password field
+function handleUploadPasswordEnter(event) {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        authenticateUser();
+    }
+}
+
+// Function to navigate to external upload page (checks if authenticated)
+function goToUploadPage() {
+    const hasAccess = sessionStorage.getItem('videoAccessGranted') === 'true';
+    const errorMsg = document.getElementById('uploadAuthError');
+    
+    if (!hasAccess) {
+        errorMsg.textContent = currentLanguage === 'en'
+            ? '✗ Please login first to access the upload page!'
+            : '✗ กรุณาเข้าสู่ระบบก่อนเพื่อเข้าถึงหน้าอัปโหลด!';
+        errorMsg.style.color = '#dc3545';
+        errorMsg.style.display = 'block';
+        return;
+    }
+    
+    // User is authenticated, redirect to external upload page
+    window.location.href = 'https://ai-people-reader-v2.onrender.com/Submit_Job';
 }
 
 // Protect tutorial videos - require authentication

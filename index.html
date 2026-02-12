@@ -184,12 +184,18 @@
                         <div class="form-group">
                             <label for="uploadPassword">Password</label>
                             <div class="password-input-wrapper">
-                                <input type="password" id="uploadPassword" placeholder="Enter your password">
+                                <input type="password" id="uploadPassword" placeholder="Enter your password" onkeypress="handleUploadPasswordEnter(event)">
                                 <button type="button" class="toggle-password" onclick="togglePassword('uploadPassword', this)">
                                     👁️
                                 </button>
                             </div>
                         </div>
+                        
+                        <button class="btn btn-secondary btn-full" onclick="authenticateUser()" style="margin-bottom: 15px;">
+                            Login to Access Videos
+                        </button>
+                        
+                        <p id="uploadAuthError" class="auth-error-message" style="display: none;"></p>
                     </div>
                     
                     <div class="upload-buttons">
@@ -197,7 +203,6 @@
                             Go to the upload video page
                         </button>
                     </div>
-                    <p id="uploadAuthError" class="auth-error-message" style="display: none;"></p>
                 </div>
             </div>
         </section>
