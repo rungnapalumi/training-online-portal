@@ -807,23 +807,6 @@ document.getElementById('loginForm')?.addEventListener('submit', function(e) {
     }
 });
 
-// Logout function
-function logout() {
-    currentUser = null;
-    sessionStorage.removeItem('currentUser');
-    sessionStorage.removeItem('accountCreated');
-    sessionStorage.removeItem('paymentVerified');
-    sessionStorage.removeItem('videoUploadsRemaining');
-    
-    // Hide admin panel if open
-    document.getElementById('adminPanel').style.display = 'none';
-    
-    showLoginPage();
-    
-    // Clear any forms
-    document.getElementById('loginForm')?.reset();
-}
-
 // ==================== ADMIN PANEL FUNCTIONS ====================
 
 // Open admin panel
@@ -1225,6 +1208,103 @@ document.addEventListener('DOMContentLoaded', function() {
         protectTutorialVideos();
     }, 500);
 });
+
+// ==================== ADMIN LOGIN MODAL ====================
+
+// Show admin login modal
+function showAdminLoginModal() {
+    document.getElementById('adminLoginModal').style.display = 'flex';
+}
+
+// Close admin login modal
+function closeAdminLoginModal() {
+    document.getElementById('adminLoginModal').style.display = 'none';
+    document.getElementById('adminLoginForm').reset();
+    document.getElementById('adminLoginError').style.display = 'none';
+}
+
+// Handle admin login
+function handleAdminLogin(event) {
+    event.preventDefault();
+    
+    const username = document.getElementById('adminLoginUsername').value.trim();
+    const password = document.getElementById('adminLoginPassword').value;
+    const errorMsg = document.getElementById('adminLoginError');
+    
+    // Get users from localStorage
+    const users = JSON.parse(localStorage.getItem('users') || '{}');
+    
+    // Check credentials (case-insensitive username)
+    let foundUsername = null;
+    for (let key in users) {
+        if (key.toLowerCase() === username.toLowerCase()) {
+            foundUsername = key;
+            break;
+        }
+    }
+    
+    if (foundUsername && users[foundUsername] === password) {
+        // Check if it's Admin
+        if (foundUsername === 'Admin') {
+            // Admin login successful
+            currentUser = foundUsername;
+            sessionStorage.setItem('currentUser', currentUser);
+            sessionStorage.setItem('videoAccessGranted', 'true');
+            sessionStorage.setItem('authenticatedUser', foundUsername);
+            
+            // Update UI
+            document.getElementById('adminLoginBtn').style.display = 'none';
+            document.getElementById('userInfo').style.display = 'inline-block';
+            document.getElementById('userInfo').textContent = `Welcome, ${currentUser}!`;
+            document.getElementById('logoutBtn').style.display = 'inline-block';
+            document.getElementById('adminPanelBtn').style.display = 'inline-block';
+            
+            closeAdminLoginModal();
+            showMessage('Welcome Admin! You have full access to the system.', 'success');
+            
+            // Open admin panel automatically
+            setTimeout(() => {
+                openAdminPanel();
+            }, 500);
+        } else {
+            errorMsg.textContent = 'Admin access only! Regular users cannot access this panel.';
+            errorMsg.style.display = 'block';
+        }
+    } else {
+        errorMsg.textContent = 'Invalid username or password!';
+        errorMsg.style.display = 'block';
+    }
+}
+
+// Logout function (updated)
+function logout() {
+    currentUser = null;
+    sessionStorage.removeItem('currentUser');
+    sessionStorage.removeItem('videoAccessGranted');
+    sessionStorage.removeItem('authenticatedUser');
+    
+    // Hide admin UI
+    document.getElementById('adminLoginBtn').style.display = 'inline-block';
+    document.getElementById('userInfo').style.display = 'none';
+    document.getElementById('logoutBtn').style.display = 'none';
+    document.getElementById('adminPanelBtn').style.display = 'none';
+    
+    // Close admin panel if open
+    const adminPanel = document.getElementById('adminPanel');
+    if (adminPanel.style.display === 'block') {
+        closeAdminPanel();
+    }
+    
+    showMessage('Logged out successfully!', 'success');
+}
+
+// Close modal when clicking outside
+window.onclick = function(event) {
+    const modal = document.getElementById('adminLoginModal');
+    if (event.target == modal) {
+        closeAdminLoginModal();
+    }
+}
 
 console.log('AI People Reader™ - Training Online Portal loaded successfully!');
 

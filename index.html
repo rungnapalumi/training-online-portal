@@ -16,6 +16,7 @@
                     <span id="userInfo" style="display: none; margin-right: 15px; color: #5c4a3a;"></span>
                     <button id="logoutBtn" class="btn btn-secondary" onclick="logout()" style="display: none; margin-right: 10px;">Logout</button>
                     <button id="adminPanelBtn" class="btn btn-secondary" onclick="openAdminPanel()" style="display: none; margin-right: 10px;">Admin Panel</button>
+                    <button id="adminLoginBtn" class="btn btn-secondary" onclick="showAdminLoginModal()" style="margin-right: 10px;">Admin</button>
                     <div class="language-toggle">
                         <button id="langToggle" class="lang-btn" onclick="toggleLanguage()">
                             <span id="currentLang">EN</span> | <span id="otherLang">TH</span>
@@ -349,6 +350,33 @@
             <p>&copy; 2026 AI People Reader™. All rights reserved.</p>
         </div>
     </footer>
+
+    <!-- Admin Login Modal -->
+    <div id="adminLoginModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close" onclick="closeAdminLoginModal()">&times;</span>
+            <h2 style="text-align: center; margin-bottom: 20px;">Admin Login</h2>
+            <form id="adminLoginForm" onsubmit="handleAdminLogin(event)" class="account-form">
+                <div class="form-group">
+                    <label for="adminLoginUsername">Username</label>
+                    <input type="text" id="adminLoginUsername" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="adminLoginPassword">Password</label>
+                    <div class="password-input-wrapper">
+                        <input type="password" id="adminLoginPassword" required>
+                        <button type="button" class="toggle-password" onclick="togglePassword('adminLoginPassword', this)">
+                            👁️
+                        </button>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-full">Login as Admin</button>
+                <p id="adminLoginError" class="login-error" style="display: none;"></p>
+            </form>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
