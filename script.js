@@ -660,14 +660,9 @@ inputs.forEach(input => {
 
 // ==================== AUTHENTICATION SYSTEM ====================
 
-// Handle create account link click from login page
+// Handle create account link click from login page (not needed anymore but keeping for compatibility)
 function handleCreateAccountClick(e) {
     e.preventDefault();
-    
-    // Show main content first
-    document.getElementById('loginSection').style.display = 'none';
-    document.getElementById('mainContent').style.display = 'block';
-    document.getElementById('mainNav').style.display = 'block';
     
     // Navigate to account section
     scrollToSection('account');
@@ -685,6 +680,16 @@ function handleCreateAccountClick(e) {
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('createAccountLink')?.addEventListener('click', handleCreateAccountClick);
 });
+
+// Show main content directly without login
+function showMainContentDirectly() {
+    document.getElementById('loginSection').style.display = 'none';
+    document.getElementById('mainContent').style.display = 'block';
+    document.getElementById('mainNav').style.display = 'block';
+    document.getElementById('logoutBtn').style.display = 'none';
+    document.getElementById('adminPanelBtn').style.display = 'none';
+    document.getElementById('userInfo').style.display = 'none';
+}
 
 // Check if user is already logged in
 function checkAuthStatus() {
@@ -1026,24 +1031,14 @@ if (originalCreateAccountHandler) {
 
 // Check authentication status on page load
 window.addEventListener('DOMContentLoaded', function() {
-    checkAuthStatus();
+    // Skip login - go directly to main content
+    showMainContentDirectly();
     updateLanguage();
 });
 
-// Function to navigate to external upload page (requires login)
+// Function to navigate to external upload page (no login required)
 function goToUploadPage() {
-    const t = translations[currentLanguage];
-    
-    // Check if user is logged in
-    if (!currentUser) {
-        showMessage(t.loginRequired || 'Please login first to access the upload page!', 'error');
-        setTimeout(() => {
-            showLoginPage();
-        }, 1500);
-        return;
-    }
-    
-    // User is logged in, redirect to external upload page
+    // Redirect directly to external upload page
     window.location.href = 'https://ai-people-reader-v2.onrender.com/Submit_Job';
 }
 
