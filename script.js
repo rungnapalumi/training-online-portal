@@ -45,10 +45,10 @@ const translations = {
         uploadNowBtn: "Upload Videos Now",
         
         // Upload Section
-        uploadTitle: "Upload Your Video for Analysis",
+        uploadTitle: "Log in to access online videos tutorial and upload video for analysis",
         uploadUsernameLabel: "User Name",
         uploadPasswordLabel: "Password",
-        uploadLoginBtn: "Login to Access Videos",
+        uploadLoginBtn: "Log in to access Videos",
         uploadVideoBtn: "Go to the upload video page",
         uploadAuthError: "Please enter username and password!",
         uploadAuthSuccess: "✓ Login successful! You can now watch tutorial videos and access the upload page.",
@@ -127,10 +127,10 @@ const translations = {
         uploadNowBtn: "อัปโหลดวิดีโอเลย",
         
         // Upload Section
-        uploadTitle: "อัปโหลดวิดีโอของคุณเพื่อการวิเคราะห์",
+        uploadTitle: "เข้าสู่ระบบเพื่อเข้าถึงบทเรียนวิดีโอออนไลน์และอัปโหลดวิดีโอเพื่อการวิเคราะห์",
         uploadUsernameLabel: "ชื่อผู้ใช้",
         uploadPasswordLabel: "รหัสผ่าน",
-        uploadLoginBtn: "เข้าสู่ระบบเพื่อดูวิดีโอ",
+        uploadLoginBtn: "เข้าสู่ระบบเพื่อเข้าถึงวิดีโอ",
         uploadVideoBtn: "ไปที่หน้าอัปโหลดวิดีโอ",
         uploadAuthError: "กรุณาใส่ชื่อผู้ใช้และรหัสผ่าน!",
         uploadAuthSuccess: "✓ เข้าสู่ระบบสำเร็จ! คุณสามารถดูวิดีโอบทเรียนและเข้าถึงหน้าอัปโหลดได้แล้ว",
