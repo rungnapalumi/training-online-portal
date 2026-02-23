@@ -127,7 +127,7 @@ const translations = {
         uploadNowBtn: "อัปโหลดวิดีโอเลย",
         
         // Upload Section
-        uploadTitle: "เข้าสู่ระบบเพื่อเข้าถึงบทเรียนวิดีโอออนไลน์และอัปโหลดวิดีโอเพื่อการวิเคราะห์",
+        uploadTitle: "เข้าสู่ระบบเพื่ออัปโหลดวิดีโอเพื่อการวิเคราะห์ และเข้าสู่บทเรียนวิดีโอออนไลน์",
         uploadUsernameLabel: "ชื่อผู้ใช้",
         uploadPasswordLabel: "รหัสผ่าน",
         uploadLoginBtn: "เข้าสู่ระบบเพื่อเข้าถึงวิดีโอ",
@@ -288,7 +288,14 @@ function updateLanguage() {
     }
     
     // Update Upload section
-    document.querySelector('#upload .section-title').textContent = t.uploadTitle;
+    const uploadTitleEl = document.querySelector('#upload .section-title');
+    if (uploadTitleEl) {
+        if (currentLanguage === 'en') {
+            uploadTitleEl.innerHTML = 'Log in to upload video for analysis<br>and access online video tutorial';
+        } else {
+            uploadTitleEl.innerHTML = 'เข้าสู่ระบบเพื่ออัปโหลดวิดีโอเพื่อการวิเคราะห์<br>และเข้าสู่บทเรียนวิดีโอออนไลน์';
+        }
+    }
     const uploadUsernameLabel = document.querySelector('label[for="uploadUsername"]');
     if (uploadUsernameLabel) {
         uploadUsernameLabel.textContent = t.uploadUsernameLabel;
