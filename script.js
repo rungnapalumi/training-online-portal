@@ -45,7 +45,7 @@ const translations = {
         uploadNowBtn: "Upload Videos Now",
         
         // Upload Section
-        uploadTitle: "Log in to access online videos tutorial and upload video for analysis",
+        uploadTitle: "Log in to upload video for analysis and access online video tutorial",
         uploadUsernameLabel: "User Name",
         uploadPasswordLabel: "Password",
         uploadLoginBtn: "Log in to access Videos",
@@ -100,8 +100,8 @@ const translations = {
         navTutorial: "บทเรียนออนไลน์",
         
         // Home Section
-        homeTitle: "การเคลื่อนไหวในการสื่อสาร",
-        homeDescription1: "การนำเสนอผ่านอวัจนภาษา ในการนำเสนอนั้นสิ่งที่ผู้พูดมักมองข้ามคือการเคลื่อนไหวของตัวและภาษามือที่มาประกอบคำพูด สิ่งเหล่านี้สามารถสื่อสารถึงความตื่นเต้น ลังเล ไม่มั่นใจ ไม่น่าเชื่อถือ นอกจากนั้นการเคลื่อนไหวที่ติดเป็นนิสัยยังอาจทำให้ดูน่ารำคาญ และไม่น่าติดตาม",
+        homeTitle: "นำเสนอผ่านการเคลื่อนไหวกับ AI People Reader",
+        homeDescription1: "ในการนำเสนอนั้น สิ่งที่ผู้พูดมักมองข้ามคือการเคลื่อนไหวของตัวและภาษามือที่มาประกอบคำพูด สิ่งเหล่านี้สามารถสื่อสารถึงความตื่นเต้น ลังเล ไม่มั่นใจ และไม่น่าเชื่อถือ นอกจากนั้น การเคลื่อนไหวที่ติดเป็นนิสัยยังอาจทำให้ดูน่ารำคาญและไม่น่าติดตาม",
         homeDescription2: "ในการนำเสนอที่ดีนั้น engagement หรือการเข้าถึงผู้ฟังสำคัญที่สุด การเคลื่อนไหวของตัวและมือจึงเป็นสิ่งที่จำเป็นต้องศึกษา เพื่อให้การนำเสนอดูน่าสนใจ เป็นธรรมชาติ และน่าติดตาม แต่เพราะคนส่วนใหญ่ไม่เห็นตัวเองในขณะที่นำเสนอ จึงจำเป็นที่จะต้องได้รับการชี้แนะแบบมีหลักการ",
         homeSubtitle: "เข้าสู่เครื่องมือวิเคราะห์การเคลื่อนไหว",
         homeInstruction: "กรุณาชำระเงินก่อนอัปโหลดวิดีโอของคุณเพื่อการวิเคราะห์",
