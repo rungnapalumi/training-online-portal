@@ -4,7 +4,7 @@ const translations = {
         // Login Section
         loginTitle: "Login to AI People Reader™",
         loginBtn: "Login",
-        loginUsernameLabel: "User Name",
+        loginUsernameLabel: "Username",
         loginPasswordLabel: "Password",
         loginError: "Invalid username or password!",
         loginRequired: "Please login first to access the upload page!",
@@ -35,7 +35,7 @@ const translations = {
         
         // Account Section
         accountTitle: "Create Your Account",
-        usernameLabel: "User Name",
+        usernameLabel: "Username",
         passwordLabel: "Password",
         confirmPasswordLabel: "Confirm Password",
         createAccountSubmit: "Create Account",
@@ -46,9 +46,9 @@ const translations = {
         
         // Upload Section
         uploadTitle: "Log in to upload video for analysis and access online video tutorial",
-        uploadUsernameLabel: "User Name",
+        uploadUsernameLabel: "Username",
         uploadPasswordLabel: "Password",
-        uploadLoginBtn: "Log in to access Videos",
+        uploadLoginBtn: "Log in to access videos",
         uploadVideoBtn: "Go to the upload video page",
         uploadAuthError: "Please enter username and password!",
         uploadAuthSuccess: "✓ Login successful! You can now watch tutorial videos and access the upload page.",
