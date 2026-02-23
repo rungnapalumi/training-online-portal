@@ -49,3 +49,4 @@ The website features a modern, clean design with:
 © 2026 People Reader™. All rights reserved.
 
 
+

@@ -1155,7 +1155,7 @@ function goToUploadPage() {
     }
     
     // User is authenticated, redirect to external upload page
-    window.location.href = 'https://ai-people-reader-v2.onrender.com/Submit_Job';
+    window.location.href = 'https://ai-people-reader-v2.onrender.com/training-online-portal';
 }
 
 // Protect tutorial videos - require authentication
