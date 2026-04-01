@@ -19,6 +19,7 @@ const translations = {
         
         // Home Section
         homeTitle: "Movement in Communication",
+        homeTagline: "(Body Language in Presentation)",
         homeDescription1: "In presentations, what speakers often overlook is their body movement and hand gestures that accompany speech. These can communicate nervousness, hesitation, lack of confidence, or untrustworthiness. In addition, habitual movements may make the speaker appear distracting, irritating, or difficult to follow.",
         homeDescription2: "In a good presentation, engagement — the ability to connect with the audience — is the most important factor. Therefore, body and hand movements are factors that must be studied in order to make a presentation interesting, natural, and engaging. However, because most people cannot see themselves while presenting, it is necessary to receive structured, principle-based guidance.",
         homeSubtitle: "Access the Movement Analysis Tool",
@@ -101,6 +102,7 @@ const translations = {
         
         // Home Section
         homeTitle: "นำเสนอผ่านการเคลื่อนไหวกับ AI People Reader",
+        homeTagline: "(ภาษากายในการนำเสนอ)",
         homeDescription1: "ในการนำเสนอนั้น สิ่งที่ผู้พูดมักมองข้ามคือการเคลื่อนไหวของตัวและภาษามือที่มาประกอบคำพูด สิ่งเหล่านี้สามารถสื่อสารถึงความตื่นเต้น ลังเล ไม่มั่นใจ และไม่น่าเชื่อถือ นอกจากนั้น การเคลื่อนไหวที่ติดเป็นนิสัยยังอาจทำให้ดูน่ารำคาญและไม่น่าติดตาม",
         homeDescription2: "ในการนำเสนอที่ดีนั้น engagement หรือการเข้าถึงผู้ฟังสำคัญที่สุด การเคลื่อนไหวของตัวและมือจึงเป็นสิ่งที่จำเป็นต้องศึกษา เพื่อให้การนำเสนอดูน่าสนใจ เป็นธรรมชาติ และน่าติดตาม แต่เพราะคนส่วนใหญ่ไม่เห็นตัวเองในขณะที่นำเสนอ จึงจำเป็นที่จะต้องได้รับการชี้แนะแบบมีหลักการ",
         homeSubtitle: "เข้าสู่เครื่องมือวิเคราะห์การเคลื่อนไหว",
@@ -246,6 +248,10 @@ function updateLanguage() {
     
     // Update Home section
     document.querySelector('#home .section-title').textContent = t.homeTitle;
+    const homeTaglineEl = document.querySelector('#home .section-title-tagline');
+    if (homeTaglineEl) {
+        homeTaglineEl.textContent = t.homeTagline;
+    }
     const descriptionParas = document.querySelectorAll('#home .description-text p');
     if (descriptionParas.length >= 2) {
         descriptionParas[0].textContent = t.homeDescription1;

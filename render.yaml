@@ -1,0 +1,8 @@
+# Render Blueprint — static HTML/CSS/JS site
+# https://render.com/docs/static-sites
+services:
+  - type: web
+    name: training-online-portal
+    runtime: static
+    buildCommand: echo "No build — static files at repo root"
+    staticPublishPath: .

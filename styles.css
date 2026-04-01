@@ -130,6 +130,19 @@ body {
     color: #2d2520;
 }
 
+#home .section-title {
+    margin-bottom: 6px;
+}
+
+.section-title-tagline {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 1.25rem;
+    text-align: center;
+    margin: 0 auto 20px;
+    font-weight: 400;
+    color: #4a3f36;
+}
+
 .section-subtitle {
     font-size: 1.3rem;
     text-align: center;
@@ -689,6 +702,10 @@ button:disabled:hover {
         font-size: 2rem;
     }
     
+    .section-title-tagline {
+        font-size: 1.1rem;
+    }
+    
     .section-subtitle {
         font-size: 1.1rem;
     }
@@ -732,6 +749,10 @@ button:disabled:hover {
     
     .section-title {
         font-size: 1.6rem;
+    }
+    
+    .section-title-tagline {
+        font-size: 1rem;
     }
     
     .tutorial-grid,
