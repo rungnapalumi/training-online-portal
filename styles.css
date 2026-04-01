@@ -136,7 +136,7 @@ body {
 
 .section-title-tagline {
     font-family: Georgia, "Times New Roman", serif;
-    font-size: 1.25rem;
+    font-size: 2rem;
     text-align: center;
     margin: 0 auto 20px;
     font-weight: 400;
@@ -703,7 +703,7 @@ button:disabled:hover {
     }
     
     .section-title-tagline {
-        font-size: 1.1rem;
+        font-size: 1.75rem;
     }
     
     .section-subtitle {
@@ -752,7 +752,7 @@ button:disabled:hover {
     }
     
     .section-title-tagline {
-        font-size: 1rem;
+        font-size: 1.5rem;
     }
     
     .tutorial-grid,
