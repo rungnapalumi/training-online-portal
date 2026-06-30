@@ -20,8 +20,8 @@ const translations = {
         // Home Section
         homeTitle: "Movement in Communication",
         homeTagline: "(Body Language in Presentation)",
-        homeDescription1: "In presentations, what speakers often overlook is their body movement and hand gestures that accompany speech. These can communicate nervousness, hesitation, lack of confidence, or untrustworthiness. In addition, habitual movements may make the speaker appear distracting, irritating, or difficult to follow.",
-        homeDescription2: "In a good presentation, engagement — the ability to connect with the audience — is the most important factor. Therefore, body and hand movements are factors that must be studied in order to make a presentation interesting, natural, and engaging. However, because most people cannot see themselves while presenting, it is necessary to receive structured, principle-based guidance.",
+        homeDescription1: "In presentations, what speakers often overlook are their body movement and hand gestures that accompany speech. These can communicate nervousness, hesitation, lack of confidence, or untrustworthiness. In addition, habitual movements may make the speaker appear disconnected with his or her verbal message.",
+        homeDescription2: "In a good presentation, engagement or the ability to connect with the audience is the most important factor. Therefore, \"integrated movement\" or \"whole body movement\" where the posture and gestures are merging are factors that must be studied in order to make a presentation interesting, natural, and engaging. However, since most people don't get to see themselves presenting, non-biased, structured and applicable guidance are necessary.",
         homeSubtitle: "Access the Movement Analysis Tool",
         homeInstruction: "Please complete the payment before uploading your video for analysis.",
         qrTitle: "Scan QR Code to Pay",
