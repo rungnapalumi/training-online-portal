@@ -213,13 +213,29 @@ function toggleLanguage() {
     updateLanguage();
 }
 
+// Safely set text content if the element exists (admin page has more sections than /tutorials)
+function setText(sel, text) {
+    const el = typeof sel === 'string' ? document.querySelector(sel) : sel;
+    if (el && text != null) {
+        el.textContent = text;
+    }
+}
+
 // Update all text on the page
 function updateLanguage() {
     const t = translations[currentLanguage];
     
-    // Update language toggle button
-    document.getElementById('currentLang').textContent = currentLanguage.toUpperCase();
-    document.getElementById('otherLang').textContent = currentLanguage === 'en' ? 'TH' : 'EN';
+    // Update language toggle button (present on index, tutorials, etc.)
+    setText('#currentLang', currentLanguage.toUpperCase());
+    setText('#otherLang', currentLanguage === 'en' ? 'TH' : 'EN');
+
+    // Generic hook used by tutorials.html (and any element marked for translation)
+    document.querySelectorAll('[data-translate]').forEach(el => {
+        const key = el.getAttribute('data-translate');
+        if (key && t[key] != null) {
+            el.textContent = t[key];
+        }
+    });
     
     // Update Login section
     const loginTitle = document.querySelector('#loginSection .section-title');
@@ -246,14 +262,14 @@ function updateLanguage() {
         document.getElementById('createAccountLink')?.addEventListener('click', handleCreateAccountClick);
     }
     
-    // Update navigation
-    document.querySelector('a[href="#home"]').textContent = t.navHome;
-    document.querySelector('a[href="#account"]').textContent = t.navAccount;
-    document.querySelector('a[href="#upload"]').textContent = t.navUpload;
-    document.querySelector('a[href="#tutorials"]').textContent = t.navTutorial;
+    // Update navigation (admin/full portal only)
+    setText('a[href="#home"]', t.navHome);
+    setText('a[href="#account"]', t.navAccount);
+    setText('a[href="#upload"]', t.navUpload);
+    setText('a[href="#tutorials"]', t.navTutorial);
     
-    // Update Home section
-    document.querySelector('#home .section-title').textContent = t.homeTitle;
+    // Update Home section (admin page uses #home; tutorials page uses data-translate)
+    setText('#home .section-title', t.homeTitle);
     const homeTaglineEl = document.querySelector('#home .section-title-tagline');
     if (homeTaglineEl) {
         homeTaglineEl.textContent = t.homeTagline;
@@ -263,28 +279,36 @@ function updateLanguage() {
         descriptionParas[0].textContent = t.homeDescription1;
         descriptionParas[1].textContent = t.homeDescription2;
     }
-    document.querySelector('#home .section-subtitle').textContent = t.homeSubtitle;
-    document.querySelector('#home .instruction-text').textContent = t.homeInstruction;
-    document.querySelectorAll('.card-title')[0].textContent = t.qrTitle;
-    document.querySelector('.card-instruction').textContent = t.qrInstruction;
-    document.querySelectorAll('.card-title')[1].textContent = t.uploadConfirmTitle;
+    setText('#home .section-subtitle', t.homeSubtitle);
+    setText('#home .instruction-text', t.homeInstruction);
+    const cardTitles = document.querySelectorAll('.card-title');
+    if (cardTitles[0]) {
+        cardTitles[0].textContent = t.qrTitle;
+    }
+    setText('.card-instruction', t.qrInstruction);
+    if (cardTitles[1]) {
+        cardTitles[1].textContent = t.uploadConfirmTitle;
+    }
     // Update the upload slip button specifically (not the login button)
     const uploadSlipBtn = document.querySelector('.upload-area .btn-primary');
     if (uploadSlipBtn) {
         uploadSlipBtn.textContent = t.uploadSlipBtn;
     }
-    document.querySelector('.file-format').textContent = t.fileFormat;
-    document.querySelector('label[for="paymentAmount"]').textContent = t.amountLabel;
-    document.getElementById('paymentAmount').placeholder = t.amountPlaceholder;
-    document.getElementById('verifyPaymentBtn').textContent = t.verifyBtn;
-    document.getElementById('createAccountBtn').textContent = t.createAccountBtn;
+    setText('.file-format', t.fileFormat);
+    setText('label[for="paymentAmount"]', t.amountLabel);
+    const paymentAmount = document.getElementById('paymentAmount');
+    if (paymentAmount) {
+        paymentAmount.placeholder = t.amountPlaceholder;
+    }
+    setText('#verifyPaymentBtn', t.verifyBtn);
+    setText('#createAccountBtn', t.createAccountBtn);
     
     // Update Account section
-    document.querySelector('#account .section-title').textContent = t.accountTitle;
-    document.querySelector('label[for="username"]').textContent = t.usernameLabel;
-    document.querySelector('label[for="password"]').textContent = t.passwordLabel;
-    document.querySelector('label[for="confirmPassword"]').textContent = t.confirmPasswordLabel;
-    document.querySelector('#createAccountForm button[type="submit"]').textContent = t.createAccountSubmit;
+    setText('#account .section-title', t.accountTitle);
+    setText('label[for="username"]', t.usernameLabel);
+    setText('label[for="password"]', t.passwordLabel);
+    setText('label[for="confirmPassword"]', t.confirmPasswordLabel);
+    setText('#createAccountForm button[type="submit"]', t.createAccountSubmit);
     
     const successTitle = document.querySelector('#accountCreatedMessage h3');
     if (successTitle) {
@@ -333,8 +357,8 @@ function updateLanguage() {
         uploadPasswordInput.placeholder = currentLanguage === 'en' ? 'Enter your password' : 'ใส่รหัสผ่านของคุณ';
     }
     
-    // Update Tutorial section
-    document.querySelector('#tutorials .section-title').textContent = t.tutorialTitle;
+    // Update Tutorial section (works on both /tutorials and the full portal)
+    setText('#tutorials .section-title', t.tutorialTitle);
     document.querySelectorAll('.tutorial-title').forEach((title, index) => {
         // First 2 are Introduction videos
         if (index < 2) {
@@ -349,7 +373,7 @@ function updateLanguage() {
     });
     
     // Update Footer
-    document.querySelector('.footer p').textContent = t.footerText;
+    setText('.footer p', t.footerText);
 }
 
 // Initialize language on page load
