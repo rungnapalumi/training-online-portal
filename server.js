@@ -7,6 +7,34 @@ const crypto = require('crypto');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Trust proxy for secure cookies behind Render's proxy
+app.set('trust proxy', 1);
+
+// User roles configuration - define what each user can access
+const USER_ROLES = {
+  'Admin': {
+    role: 'admin',
+    allowedPages: ['all'], // Can access everything
+    redirectAfterLogin: '/'
+  },
+  'The Mall': {
+    role: 'tutorial-only',
+    allowedPages: ['/tutorials', '/tutorials.html'],
+    redirectAfterLogin: '/tutorials'
+  }
+};
+
+// Default role for users not in USER_ROLES
+const DEFAULT_ROLE = {
+  role: 'tutorial-only',
+  allowedPages: ['/tutorials', '/tutorials.html'],
+  redirectAfterLogin: '/tutorials'
+};
+
+function getUserRole(username) {
+  return USER_ROLES[username] || DEFAULT_ROLE;
+}
+
 // Parse environment variables for authorized users
 // Format: PORTAL_USERS={"The Mall":"password123","Client Name":"pass456"}
 function parseAuthorizedUsers() {
@@ -133,7 +161,12 @@ app.post('/login', (req, res) => {
   if (validateCredentials(username, password)) {
     req.session.authenticated = true;
     req.session.username = username;
-    res.json({ success: true });
+    
+    const userRole = getUserRole(username);
+    res.json({ 
+      success: true, 
+      redirectTo: userRole.redirectAfterLogin 
+    });
   } else {
     res.status(401).json({ success: false, error: 'Invalid username or password' });
   }
@@ -153,9 +186,12 @@ app.post('/logout', (req, res) => {
 // Get current user info (requires auth)
 app.get('/api/user', (req, res) => {
   if (req.session && req.session.authenticated) {
+    const userRole = getUserRole(req.session.username);
     res.json({ 
       authenticated: true, 
-      username: req.session.username 
+      username: req.session.username,
+      role: userRole.role,
+      allowedPages: userRole.allowedPages
     });
   } else {
     res.status(401).json({ authenticated: false });
@@ -167,12 +203,47 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok', authenticated: !!req.session?.authenticated });
 });
 
-// Serve static files and pages - ALL PROTECTED
-app.use(requireAuth);
+// Allow static assets for login page (CSS, fonts, images) - PUBLIC
+app.use('/styles.css', express.static(path.join(__dirname, 'styles.css')));
+app.use('/static', express.static(path.join(__dirname, 'static')));
+app.use('/LibreBaskerville-VariableFont_wght.ttf', express.static(path.join(__dirname, 'LibreBaskerville-VariableFont_wght.ttf')));
+app.use('/LibreBaskerville-Italic-VariableFont_wght.ttf', express.static(path.join(__dirname, 'LibreBaskerville-Italic-VariableFont_wght.ttf')));
 
-// Serve static assets
+// Authorization middleware - check if user has access to requested page
+function checkPageAccess(req, res, next) {
+  if (!req.session || !req.session.authenticated) {
+    return next(); // Let requireAuth handle unauthenticated
+  }
+  
+  const username = req.session.username;
+  const userRole = getUserRole(username);
+  const requestedPath = req.path;
+  
+  // Admin can access everything
+  if (userRole.allowedPages.includes('all')) {
+    return next();
+  }
+  
+  // Check if requested path is in allowed pages
+  const isAllowed = userRole.allowedPages.some(page => {
+    return requestedPath === page || requestedPath.startsWith(page);
+  });
+  
+  if (!isAllowed) {
+    // Redirect to user's home page
+    return res.redirect(userRole.redirectAfterLogin);
+  }
+  
+  next();
+}
+
+// Apply authentication and authorization to all protected routes
+app.use(requireAuth);
+app.use(checkPageAccess);
+
+// Serve remaining static assets (now protected)
 app.use(express.static(__dirname, {
-  index: false, // Don't auto-serve index.html
+  index: false,
   dotfiles: 'deny'
 }));
 
@@ -183,6 +254,15 @@ app.get('/', (req, res) => {
 
 app.get('/education.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'education.html'));
+});
+
+// Tutorial-only page for restricted users
+app.get('/tutorials', (req, res) => {
+  res.sendFile(path.join(__dirname, 'tutorials.html'));
+});
+
+app.get('/tutorials.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'tutorials.html'));
 });
 
 // Catch-all for other HTML files

@@ -66,6 +66,9 @@ const translations = {
         // Footer
         footerText: "© 2026 AI People Reader™. All rights reserved.",
         
+        // Buttons
+        logoutBtn: "Logout",
+        
         // Messages
         paymentVerified: "✓ Payment verified! Amount is correct (500 THB). You can now create your account.",
         paymentFailed: "✗ Payment verification failed! Expected amount: 500 THB, but you entered:",
@@ -148,6 +151,9 @@ const translations = {
         
         // Footer
         footerText: "© 2026 AI People Reader™ สงวนลิขสิทธิ์",
+        
+        // Buttons
+        logoutBtn: "ออกจากระบบ",
         
         // Messages
         paymentVerified: "✓ ตรวจสอบการชำระเงินสำเร็จ! จำนวนเงินถูกต้อง (500 บาท) คุณสามารถสร้างบัญชีได้แล้ว",

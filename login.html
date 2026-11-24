@@ -114,6 +114,13 @@
         <div class="container">
             <div class="header-content">
                 <h1 class="logo">AI PEOPLE READER™</h1>
+                <div class="header-right">
+                    <div class="language-toggle">
+                        <button id="langToggle" class="lang-btn" onclick="toggleLoginLanguage()">
+                            <span id="currentLang">EN</span> | <span id="otherLang">TH</span>
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </header>
@@ -123,20 +130,20 @@
         <div class="login-box">
             <div class="lock-icon">🔒</div>
             <h2>Training Portal Login</h2>
-            <p class="subtitle">Please enter your organization credentials</p>
+            <p class="subtitle">Please enter your credentials</p>
             
             <div id="errorMessage" class="error-message"></div>
             
             <form id="loginForm">
                 <div class="form-group">
-                    <label for="username">Organization Name</label>
+                    <label for="username">Username</label>
                     <input 
                         type="text" 
                         id="username" 
                         name="username" 
                         required 
                         autocomplete="username"
-                        placeholder="Enter your organization name"
+                        placeholder="Enter your username"
                     >
                 </div>
                 
@@ -167,6 +174,61 @@
     </footer>
 
     <script>
+        // Login page translations
+        const loginTranslations = {
+            en: {
+                title: "Training Portal Login",
+                subtitle: "Please enter your credentials",
+                usernameLabel: "Username",
+                usernamePlaceholder: "Enter your username",
+                passwordLabel: "Password",
+                passwordPlaceholder: "Enter your password",
+                loginBtn: "Login",
+                loggingIn: "Logging in...",
+                invalidCredentials: "Invalid credentials. Please try again.",
+                loginFailed: "Login failed. Please try again."
+            },
+            th: {
+                title: "เข้าสู่ระบบพอร์ทัลการฝึกอบรม",
+                subtitle: "กรุณากรอกข้อมูลประจำตัวของคุณ",
+                usernameLabel: "ชื่อผู้ใช้",
+                usernamePlaceholder: "กรอกชื่อผู้ใช้ของคุณ",
+                passwordLabel: "รหัสผ่าน",
+                passwordPlaceholder: "กรอกรหัสผ่านของคุณ",
+                loginBtn: "เข้าสู่ระบบ",
+                loggingIn: "กำลังเข้าสู่ระบบ...",
+                invalidCredentials: "ข้อมูลประจำตัวไม่ถูกต้อง กรุณาลองอีกครั้ง",
+                loginFailed: "เข้าสู่ระบบล้มเหลว กรุณาลองอีกครั้ง"
+            }
+        };
+        
+        let currentLang = localStorage.getItem('language') || 'en';
+        
+        function updateLoginLanguage() {
+            const t = loginTranslations[currentLang];
+            
+            document.querySelector('.login-box h2').textContent = t.title;
+            document.querySelector('.login-box .subtitle').textContent = t.subtitle;
+            document.querySelector('label[for="username"]').textContent = t.usernameLabel;
+            document.getElementById('username').placeholder = t.usernamePlaceholder;
+            document.querySelector('label[for="password"]').textContent = t.passwordLabel;
+            document.getElementById('password').placeholder = t.passwordPlaceholder;
+            loginBtn.textContent = t.loginBtn;
+            
+            // Update language toggle
+            document.getElementById('currentLang').textContent = currentLang === 'en' ? 'EN' : 'TH';
+            document.getElementById('otherLang').textContent = currentLang === 'en' ? 'TH' : 'EN';
+        }
+        
+        function toggleLoginLanguage() {
+            currentLang = currentLang === 'en' ? 'th' : 'en';
+            localStorage.setItem('language', currentLang);
+            updateLoginLanguage();
+        }
+        
+        // Initialize language on page load
+        updateLoginLanguage();
+        
         const form = document.getElementById('loginForm');
         const errorMessage = document.getElementById('errorMessage');
         const loginBtn = document.getElementById('loginBtn');
@@ -177,9 +239,11 @@
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
             
+            const t = loginTranslations[currentLang];
+            
             // Disable button and show loading state
             loginBtn.disabled = true;
-            loginBtn.textContent = 'Logging in...';
+            loginBtn.textContent = t.loggingIn;
             errorMessage.classList.remove('show');
             
             try {
@@ -194,20 +258,20 @@
                 const data = await response.json();
                 
                 if (data.success) {
-                    // Redirect to home page
-                    window.location.href = '/';
+                    // Redirect to user-specific page
+                    window.location.href = data.redirectTo || '/';
                 } else {
                     // Show error message
-                    errorMessage.textContent = data.error || 'Invalid credentials. Please try again.';
+                    errorMessage.textContent = data.error || t.invalidCredentials;
                     errorMessage.classList.add('show');
                     loginBtn.disabled = false;
-                    loginBtn.textContent = 'Login';
+                    loginBtn.textContent = t.loginBtn;
                 }
             } catch (error) {
-                errorMessage.textContent = 'Login failed. Please try again.';
+                errorMessage.textContent = t.loginFailed;
                 errorMessage.classList.add('show');
                 loginBtn.disabled = false;
-                loginBtn.textContent = 'Login';
+                loginBtn.textContent = t.loginBtn;
             }
         });
         
