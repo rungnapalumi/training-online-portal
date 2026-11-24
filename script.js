@@ -1203,6 +1203,15 @@ function goToUploadPage() {
 
 // Protect tutorial videos - require authentication
 function protectTutorialVideos() {
+    // /tutorials is already behind server-side login (e.g. The Mall).
+    // This client-side lock was built for index.html, where access is
+    // granted only after the "Upload Video" form sets sessionStorage.
+    // Applying it here removed native controls and blocked playback.
+    const path = window.location.pathname;
+    if (path === '/tutorials' || path === '/tutorials.html') {
+        return;
+    }
+
     const videos = document.querySelectorAll('#tutorials video');
     
     videos.forEach(video => {
