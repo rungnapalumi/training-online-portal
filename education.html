@@ -12,6 +12,8 @@
             <div class="header-content">
                 <h1 class="logo">AI PEOPLE READER™</h1>
                 <div class="header-right">
+                    <span id="organizationName" style="margin-right: 15px; color: #f5f5f5; font-weight: 600;"></span>
+                    <button id="serverLogoutBtn" class="btn btn-secondary" onclick="serverLogout()" style="margin-right: 10px;">Logout</button>
                     <a href="index.html" class="btn btn-secondary">← กลับหน้าหลัก</a>
                 </div>
             </div>
@@ -110,5 +112,38 @@
             <p>&copy; 2026 AI People Reader™. All rights reserved.</p>
         </div>
     </footer>
+    
+    <script>
+        // Fetch and display logged-in organization name
+        async function loadUserInfo() {
+            try {
+                const response = await fetch('/api/user');
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.authenticated && data.username) {
+                        document.getElementById('organizationName').textContent = data.username;
+                    }
+                }
+            } catch (error) {
+                console.error('Failed to load user info:', error);
+            }
+        }
+        
+        // Server-side logout
+        async function serverLogout() {
+            try {
+                const response = await fetch('/logout', { method: 'POST' });
+                if (response.ok) {
+                    window.location.href = '/login';
+                }
+            } catch (error) {
+                console.error('Logout failed:', error);
+                window.location.href = '/login';
+            }
+        }
+        
+        // Load user info on page load
+        loadUserInfo();
+    </script>
 </body>
 </html>

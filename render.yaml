@@ -1,8 +1,15 @@
-# Render Blueprint — static HTML/CSS/JS site
-# https://render.com/docs/static-sites
+# Render Blueprint — Node.js web service with authentication
+# https://render.com/docs/web-services
 services:
   - type: web
     name: training-online-portal
-    runtime: static
-    buildCommand: echo "No build — static files at repo root"
-    staticPublishPath: .
+    runtime: node
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORTAL_USERS
+        sync: false
+      - key: SESSION_SECRET
+        generateValue: true
