@@ -282,6 +282,17 @@
             transform: translate(-50%, -50%) scale(1.1);
             box-shadow: 0 12px 32px rgba(168, 85, 247, 0.6);
         }
+
+        /* Hide the decorative play circle after the video has started
+           (stays hidden while paused mid-way, seeking, or fullscreen). */
+        .video-container.is-started::before,
+        .video-container.is-started::after,
+        .video-container.is-started:hover::before,
+        .video-container.is-started:hover::after {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
         
         .video-container::before {
             content: '';
@@ -519,6 +530,16 @@
             }
         }
         
+        // Hide the decorative play overlay after a video starts (and keep it hidden).
+        document.querySelectorAll('.video-container video').forEach(video => {
+            const markStarted = () => {
+                const container = video.closest('.video-container');
+                if (container) container.classList.add('is-started');
+            };
+            video.addEventListener('play', markStarted);
+            video.addEventListener('playing', markStarted);
+        });
+
         // Load user info on page load
         loadUserInfo();
     </script>
