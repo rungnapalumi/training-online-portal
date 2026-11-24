@@ -249,6 +249,14 @@ function checkPageAccess(req, res, next) {
   const userRole = getUserRole(username);
   const requestedPath = req.path;
   
+  // Static assets required by allowed pages (e.g. script.js on /tutorials).
+  // Restricted users were being redirected to /tutorials when the browser
+  // requested these files, so the page received HTML instead of JavaScript
+  // and the language toggle did nothing.
+  if (/\.(?:js|mjs|css|map|png|jpe?g|gif|svg|webp|ico|woff2?|ttf|otf|eot|mp4|webm|mp3|wav|pdf)$/i.test(requestedPath)) {
+    return next();
+  }
+
   // Admin can access everything
   if (userRole.allowedPages.includes('all')) {
     return next();
