@@ -134,7 +134,7 @@
             
             <div id="errorMessage" class="error-message"></div>
             
-            <form id="loginForm">
+            <form id="loginForm" method="POST" action="/login">
                 <div class="form-group">
                     <label for="username">Username</label>
                     <input 
@@ -213,7 +213,8 @@
             document.getElementById('username').placeholder = t.usernamePlaceholder;
             document.querySelector('label[for="password"]').textContent = t.passwordLabel;
             document.getElementById('password').placeholder = t.passwordPlaceholder;
-            loginBtn.textContent = t.loginBtn;
+            const loginBtn = document.getElementById('loginBtn');
+            if (loginBtn) loginBtn.textContent = t.loginBtn;
             
             // Update language toggle
             document.getElementById('currentLang').textContent = currentLang === 'en' ? 'EN' : 'TH';
@@ -229,9 +230,21 @@
         // Initialize language on page load
         updateLoginLanguage();
         
+        // Check for error query parameter (from failed form submission)
+        const urlParams = new URLSearchParams(window.location.search);
+        const errorParam = urlParams.get('error');
+        
         const form = document.getElementById('loginForm');
         const errorMessage = document.getElementById('errorMessage');
         const loginBtn = document.getElementById('loginBtn');
+        
+        if (errorParam === 'invalid') {
+            const t = loginTranslations[currentLang];
+            errorMessage.textContent = t.invalidCredentials;
+            errorMessage.classList.add('show');
+            // Clean URL without page reload
+            window.history.replaceState({}, document.title, '/login');
+        }
         
         form.addEventListener('submit', async (e) => {
             e.preventDefault();

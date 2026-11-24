@@ -151,10 +151,17 @@ app.get('/login', (req, res) => {
   if (req.session && req.session.authenticated) {
     return res.redirect('/');
   }
+  
+  // Security: Never allow credentials in query params - redirect to clean URL
+  if (req.query.username || req.query.password) {
+    console.warn('⚠️  Credentials detected in GET query string - redirecting to clean /login');
+    return res.redirect('/login');
+  }
+  
   res.sendFile(path.join(__dirname, 'login.html'));
 });
 
-// Login endpoint
+// Login endpoint - handles both JSON (fetch) and form-urlencoded (native submit)
 app.post('/login', (req, res) => {
   const { username, password } = req.body;
   
@@ -163,12 +170,34 @@ app.post('/login', (req, res) => {
     req.session.username = username;
     
     const userRole = getUserRole(username);
-    res.json({ 
-      success: true, 
-      redirectTo: userRole.redirectAfterLogin 
-    });
+    const redirectTo = userRole.redirectAfterLogin;
+    
+    // Check if request expects JSON (from fetch) or HTML (from form)
+    const wantsJson = req.headers.accept?.includes('application/json') || 
+                      req.headers['content-type']?.includes('application/json');
+    
+    if (wantsJson) {
+      // JavaScript fetch request - return JSON
+      res.json({ 
+        success: true, 
+        redirectTo: redirectTo
+      });
+    } else {
+      // Native form submission - redirect directly
+      res.redirect(redirectTo);
+    }
   } else {
-    res.status(401).json({ success: false, error: 'Invalid username or password' });
+    // Check if request expects JSON
+    const wantsJson = req.headers.accept?.includes('application/json') || 
+                      req.headers['content-type']?.includes('application/json');
+    
+    if (wantsJson) {
+      res.status(401).json({ success: false, error: 'Invalid username or password' });
+    } else {
+      // Form submission - redirect back to login with error
+      // Note: In production, you'd use flash messages or query params
+      res.redirect('/login?error=invalid');
+    }
   }
 });
 
