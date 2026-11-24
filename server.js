@@ -232,11 +232,12 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok', authenticated: !!req.session?.authenticated });
 });
 
-// Allow static assets for login page (CSS, fonts, images) - PUBLIC
+// Allow static assets for login page (CSS, fonts, images, logo) - PUBLIC
 app.use('/styles.css', express.static(path.join(__dirname, 'styles.css')));
 app.use('/static', express.static(path.join(__dirname, 'static')));
 app.use('/LibreBaskerville-VariableFont_wght.ttf', express.static(path.join(__dirname, 'LibreBaskerville-VariableFont_wght.ttf')));
 app.use('/LibreBaskerville-Italic-VariableFont_wght.ttf', express.static(path.join(__dirname, 'LibreBaskerville-Italic-VariableFont_wght.ttf')));
+app.use('/brand-logo.png', express.static(path.join(__dirname, 'brand-logo.png')));
 
 // Authorization middleware - check if user has access to requested page
 function checkPageAccess(req, res, next) {
