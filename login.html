@@ -3,108 +3,305 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#050508">
     <title>Login - AI People Reader™</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #050508;
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* Animated gradient background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(168, 85, 247, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 50%, rgba(34, 211, 238, 0.15) 0%, transparent 50%);
+            animation: glow 10s ease-in-out infinite alternate;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        @keyframes glow {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+            100% {
+                transform: translate(2%, 2%) scale(1.05);
+            }
+        }
+        
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .header {
+            padding: 30px 0;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo-link {
+            text-decoration: none;
+            display: block;
+        }
+        
+        .logo-mark {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ec4899 0%, #a855f7 50%, #22d3ee 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.02em;
+        }
+        
+        .language-toggle {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 8px 16px;
+        }
+        
+        .lang-btn {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        #currentLang {
+            opacity: 1;
+        }
+        
+        #otherLang {
+            opacity: 0.5;
+        }
         .login-container {
             min-height: calc(100vh - 200px);
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 40px 20px;
+            padding: 60px 20px;
+            position: relative;
+            z-index: 1;
         }
         
         .login-box {
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            padding: 40px;
+            background: rgba(17, 17, 27, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 48px;
             max-width: 450px;
             width: 100%;
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.5),
+                0 0 100px rgba(168, 85, 247, 0.1);
+        }
+        
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 32px;
+        }
+        
+        .logo-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 24px;
+            filter: drop-shadow(0 0 30px rgba(168, 85, 247, 0.5))
+                    drop-shadow(0 0 60px rgba(34, 211, 238, 0.3));
+            animation: logoPulse 3s ease-in-out infinite;
+        }
+        
+        @keyframes logoPulse {
+            0%, 100% {
+                filter: drop-shadow(0 0 30px rgba(168, 85, 247, 0.5))
+                        drop-shadow(0 0 60px rgba(34, 211, 238, 0.3));
+            }
+            50% {
+                filter: drop-shadow(0 0 40px rgba(168, 85, 247, 0.7))
+                        drop-shadow(0 0 80px rgba(34, 211, 238, 0.5));
+            }
         }
         
         .login-box h2 {
             text-align: center;
-            color: #3d3630;
-            margin-bottom: 10px;
-            font-size: 1.8rem;
+            color: #ffffff;
+            margin-bottom: 8px;
+            font-size: 1.75rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
         }
         
         .login-box .subtitle {
             text-align: center;
-            color: #666;
-            margin-bottom: 30px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 32px;
             font-size: 0.95rem;
+            font-weight: 400;
         }
         
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 24px;
         }
         
         .form-group label {
             display: block;
             margin-bottom: 8px;
-            color: #3d3630;
-            font-weight: 600;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 500;
+            font-size: 0.875rem;
+            letter-spacing: 0.01em;
         }
         
         .form-group input {
             width: 100%;
-            padding: 12px;
-            border: 2px solid #d4c5b9;
-            border-radius: 4px;
-            font-family: 'Libre Baskerville', serif;
+            padding: 14px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            font-family: 'Inter', sans-serif;
             font-size: 1rem;
-            transition: border-color 0.3s;
+            color: #ffffff;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
         }
         
         .form-group input:focus {
             outline: none;
-            border-color: #c4a57b;
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(168, 85, 247, 0.5);
+            box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.1);
         }
         
         .login-btn {
             width: 100%;
-            padding: 14px;
-            background-color: #c4a57b;
+            padding: 16px;
+            background: linear-gradient(135deg, #ec4899 0%, #a855f7 50%, #22d3ee 100%);
             color: white;
             border: none;
-            border-radius: 4px;
-            font-family: 'Libre Baskerville', serif;
-            font-size: 1.1rem;
+            border-radius: 12px;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .login-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #ec4899 0%, #a855f7 50%, #22d3ee 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
         
         .login-btn:hover {
-            background-color: #b8956a;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(168, 85, 247, 0.4);
+        }
+        
+        .login-btn:hover::before {
+            opacity: 1;
+        }
+        
+        .login-btn:active {
+            transform: translateY(0);
         }
         
         .login-btn:disabled {
-            background-color: #ccc;
+            opacity: 0.5;
             cursor: not-allowed;
+            transform: none;
         }
         
         .error-message {
-            background-color: #fee;
-            color: #c33;
-            padding: 12px;
-            border-radius: 4px;
-            margin-bottom: 20px;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #fca5a5;
+            padding: 12px 16px;
+            border-radius: 12px;
+            margin-bottom: 24px;
             display: none;
             text-align: center;
+            font-size: 0.875rem;
         }
         
         .error-message.show {
             display: block;
         }
         
-        .lock-icon {
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 20px;
             text-align: center;
-            font-size: 3rem;
-            margin-bottom: 20px;
-            color: #c4a57b;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.875rem;
+            z-index: 1;
+        }
+        
+        @media (max-width: 768px) {
+            .login-box {
+                padding: 32px 24px;
+            }
+            
+            .logo-image {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .login-box h2 {
+                font-size: 1.5rem;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                gap: 16px;
+            }
         }
     </style>
 </head>
@@ -113,13 +310,13 @@
     <header class="header">
         <div class="container">
             <div class="header-content">
-                <h1 class="logo">AI PEOPLE READER™</h1>
-                <div class="header-right">
-                    <div class="language-toggle">
-                        <button id="langToggle" class="lang-btn" onclick="toggleLoginLanguage()">
-                            <span id="currentLang">EN</span> | <span id="otherLang">TH</span>
-                        </button>
-                    </div>
+                <a href="/" class="logo-link">
+                    <span class="logo-mark">AI PEOPLE READER™</span>
+                </a>
+                <div class="language-toggle">
+                    <button id="langToggle" class="lang-btn" onclick="toggleLoginLanguage()">
+                        <span id="currentLang">EN</span> | <span id="otherLang">TH</span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -128,8 +325,10 @@
     <!-- Login Container -->
     <div class="login-container">
         <div class="login-box">
-            <div class="lock-icon">🔒</div>
-            <h2>Training Portal Login</h2>
+            <div class="logo-container">
+                <img src="brand-logo.png" alt="AI People Reader" class="logo-image">
+            </div>
+            <h2>Online Training Login</h2>
             <p class="subtitle">Please enter your credentials</p>
             
             <div id="errorMessage" class="error-message"></div>
@@ -168,16 +367,14 @@
 
     <!-- Footer -->
     <footer class="footer">
-        <div class="container">
-            <p>&copy; 2026 AI People Reader™. All rights reserved.</p>
-        </div>
+        <p>&copy; 2026 AI People Reader™. All rights reserved.</p>
     </footer>
 
     <script>
         // Login page translations
         const loginTranslations = {
             en: {
-                title: "Training Portal Login",
+                title: "Online Training Login",
                 subtitle: "Please enter your credentials",
                 usernameLabel: "Username",
                 usernamePlaceholder: "Enter your username",
